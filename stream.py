@@ -1,5 +1,7 @@
 import socket
 from queue import Queue
+import time
+import struct
 
 import picamera
 
@@ -8,18 +10,29 @@ import picamera
 class Output:
     def __init__(self, connection, q):
         self.conn = connection
-        self.queue = q
+        self.closed = False
 
     def write(self, buf):
-        print(len(buf))
+        try:
+            size = struct.pack(">I", len(buf))
+            self.conn.send(size)
+            self.conn.sendall(buf)
+
+        except:
+            self.closed = True
+
+        return len(buf)
 
 
 server = socket.socket()
+server.bind(("", 8000))
+server.listen(1)
 cam = picamera.PiCamera()
 q = Queue()
 
 
 while True:
+    print("[Server Ready]")
     conn, addr = server.accept()
     print(f"Connection established {addr}")
     out = Output(conn, q)
@@ -27,10 +40,12 @@ while True:
 
     while True:
         try:
+            if out.closed:
+                raise Exception()
+
             time.sleep(0.5)
-        except Exception as e:
-            print(e)
+        except:
             cam.stop_recording()
-            cam.close()
+            #time.sleep()
             break
 
