@@ -19,9 +19,9 @@ try:
         print(size)
 
         while True:
-            data = s.recv(4096)
-            received += len(data)
-            print(received)
+            data = s.recv(1024)
+            received = len(img_buf)
+            print("\r", size <= received, end=" ")
             img_buf += data
             if size <= received:
                 break
