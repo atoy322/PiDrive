@@ -14,11 +14,16 @@ class Output:
 
     def write(self, buf):
         try:
-            size = struct.pack(">I", len(buf))
-            self.conn.send(size)
-            self.conn.sendall(buf)
+            sent_len = 0
+            size = len(buf)
+            size_byte = struct.pack(">I", size)
+            self.conn.send(size_byte)
+
+            while sent_len != size:
+                sent_len += self.conn.send(buf[sent_len:])
 
         except:
+            print("Connection Reset")
             self.closed = True
 
         return len(buf)
@@ -41,11 +46,12 @@ while True:
     while True:
         try:
             if out.closed:
-                raise Exception()
+                break
 
-            time.sleep(0.5)
+            time.sleep(0.1)
+
         except:
-            cam.stop_recording()
-            #time.sleep()
             break
+
+    cam.stop_recording()
 

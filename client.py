@@ -27,5 +27,5 @@ try:
         img = Image.open(io.BytesIO(img_buf))
 
 
-except Exception as e:
+except:
     s.close()
