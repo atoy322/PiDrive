@@ -35,9 +35,6 @@ class Preview(Window):
 
         img.blit(0, 0)
 
-    def on_close(self):
-        self.sock.close()
-
 
 if __name__ == "__main__":
     p = Preview(("192.168.11.11", 8000))
