@@ -7,7 +7,7 @@ from PIL import Image
 
 
 s = socket.socket()
-s.connect(("atoy322.ddns.net", 8000))
+s.connect(("192.168.11.11", 8000))
 
 
 try:
