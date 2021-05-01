@@ -47,6 +47,6 @@ if __name__ == "__main__":
         loss.backward()
         opt.step()
 
-        print("\rLoss: {:.3f},  Waste: {:.3f}[s]".format(loss, t2-t1), end="")
+        print("\rLoss: {:.3f},  Waste: {:.5f}[s]".format(loss, t2-t1), end="")
 
 
