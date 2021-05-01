@@ -18,7 +18,7 @@ try:
         size = struct.unpack(">I", size_data)[0]
 
         while True:
-            data = s.recv(size-received)
+            data = s.recv(size - received)
             received += len(data)
             img_buf += data
             if size <= received:
