@@ -31,7 +31,7 @@ class Output:
 server = socket.socket()
 server.bind(("", 8000))
 server.listen(1)
-cam = picamera.PiCamera()
+cam = picamera.PiCamera(resolution=(1280, 720), framerate=30)
 
 
 while True:
