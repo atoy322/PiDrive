@@ -13,7 +13,7 @@ __kernel void add(__global const float *a, __global float *buf){
 }
 """
 
-ctx = cl.create_some_context(0)
+ctx = cl.create_some_context()
 queue = cl.CommandQueue(ctx)
 mf = cl.mem_flags
 
