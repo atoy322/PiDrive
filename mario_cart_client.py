@@ -41,15 +41,19 @@ class Preview(Window):
         img.blit(0, 0)
 
     def on_key_press(self, symbol, modifiers):
-        if symbol == key.SPACE:
+        if symbol == key.UP:
             self.control_sock.send(b"SPEED:50")
+        elif symbol == key.DOWN:
+            self.control_sock.send(b"SPEED:-50")
         elif symbol == key.LEFT:
             self.control_sock.send(b"STEER:-30")
         elif symbol == key.RIGHT:
             self.control_sock.send(b"STEER:30")
 
     def on_key_release(self, symbol, modifiers):
-        if symbol == key.SPACE:
+        if symbol == key.UP:
+            self.control_sock.send(b"SPEED:0")
+        elif symbol == key.DOWN:
             self.control_sock.send(b"SPEED:0")
         elif symbol == key.LEFT:
             self.control_sock.send(b"STEER:0")
