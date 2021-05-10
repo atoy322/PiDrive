@@ -40,9 +40,11 @@ class Preview(Window):
         img.blit(0, 0)
 
     def on_key_press(self, symbol, modifiers):
+        print(symbol)
         self.control_sock.send(b"Pressing")
 
     def on_key_release(self, symbol, modifiers):
+        print(symbol)
         self.control_sock.send(b"Released")
 
 
