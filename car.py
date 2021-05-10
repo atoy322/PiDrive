@@ -20,6 +20,7 @@ class Car:
         self.pi.set_mode(A2, pigpio.OUTPUT)
 
     def change_speed(self, speed):
+        assert speed >= 0
         speed *= 10000
         self.pi.hardware_PWM(EN, PWM_FREQ, speed)
 
@@ -36,6 +37,7 @@ class Car:
         self.pi.write(A2, 0)
 
     def steer(self, angle):
+        assert angle <= 90 and angle >= -90
         self.pi.set_servo_pulsewidth(SERVO, 1450 + angle*10)
 
     def action(self, speed):
