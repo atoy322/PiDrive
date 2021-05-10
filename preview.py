@@ -38,5 +38,5 @@ class Preview(Window):
 
 
 if __name__ == "__main__":
-    p = Preview(("192.168.11.11", 8000), width=640, height=480)
+    p = Preview(("192.168.32.132", 8000), width=640, height=480)
     pyglet.app.run()
