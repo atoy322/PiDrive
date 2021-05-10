@@ -4,6 +4,8 @@ import struct
 
 import picamera
 
+from car import Car
+
 
 
 class Output:
@@ -43,19 +45,29 @@ while True:
     print("[Server Ready]")
     control_conn, control_addr = control_server.accept()
     stream_conn, stream_addr = stream_server.accept()
+    c = Car()
     print(f"Connection established {stream_addr}")
     out = Output(stream_conn)
     cam.start_recording(out, format="mjpeg")
 
     while True:
         try:
-            command = control_conn.recv(1024).decode()
-            print(command)
+            commands = control_conn.recv(1024).decode()
+            commands = commands.split(",")
+
+            for command in commands:
+                name, value = command.split(":")
+
+                if name == "SPEED":
+                    speed = int(value)
+                    print(speed)
 
             if out.closed:
                 break
 
         except:
+            c.stop()
+            c.terminate()
             break
 
     cam.stop_recording()

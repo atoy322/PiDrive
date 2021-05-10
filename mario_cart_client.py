@@ -6,6 +6,7 @@ import pyglet
 from pyglet.window import Window
 from pyglet.clock import schedule_interval
 from pyglet.image import ImageData
+from pyglet.window import key
 from PIL import Image
 
 
@@ -40,12 +41,12 @@ class Preview(Window):
         img.blit(0, 0)
 
     def on_key_press(self, symbol, modifiers):
-        print(symbol)
-        self.control_sock.send(b"Pressing")
+        if symbol == key.SPACE:
+            self.control_sock.send(b"SPEED:50")
 
     def on_key_release(self, symbol, modifiers):
-        print(symbol)
-        self.control_sock.send(b"Released")
+        if symbol == key.SPACE:
+            self.control_sock.send(b"SPEED:0")
 
 
 if __name__ == "__main__":

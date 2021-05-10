@@ -40,7 +40,7 @@ class Car:
         assert angle <= 90 or angle >= -90
         self.pi.set_servo_pulsewidth(SERVO, 1450 + angle*10)
 
-    def action(self, speed):
+    def speed(self, speed):
         if speed >= 0:
             self.forward()
             self.change_speed(speed)
