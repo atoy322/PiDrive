@@ -18,7 +18,7 @@ class Preview(Window):
         self.stream_sock = socket.socket()
         self.control_sock.connect((ip, 8080))
         self.stream_sock.connect((ip, 8000))
-        schedule_interval(self.update, 1e-7)
+        schedule_interval(self.update, 1e-5)
 
     def update(self, dt):
         received = 0
