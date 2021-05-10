@@ -35,6 +35,9 @@ class Car:
         self.pi.write(A1, 0)
         self.pi.write(A2, 0)
 
+    def steer(self, angle):
+        self
+
     def action(self, speed):
         if speed >= 0:
             self.forward()
