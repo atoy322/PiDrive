@@ -60,7 +60,7 @@ while True:
 
                 if name == "SPEED":
                     speed = int(value)
-                    print(speed)
+                    c.speed(speed)
 
             if out.closed:
                 break
