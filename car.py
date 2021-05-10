@@ -4,7 +4,7 @@ import pigpio
 
 
 
-EN = 12  #  GPIO18 (PWM0)
+EN = 12  #  GPIO12 (PWM0)
 A1 = 23  #  GPIO23
 A2 = 24  #  GPIO24
 SERVO = 13  #  GPIO13 (PWM1)
@@ -20,7 +20,7 @@ class Car:
         self.pi.set_mode(A2, pigpio.OUTPUT)
 
     def change_speed(self, speed):
-        speed *= 1000
+        speed *= 10000
         self.pi.hardware_PWM(EN, PWM_FREQ, speed)
 
     def forward(self):
@@ -36,7 +36,7 @@ class Car:
         self.pi.write(A2, 0)
 
     def steer(self, angle):
-        self
+        self.pi.set_servo_pulsewidth(SERVO, 1450 + angle*10)
 
     def action(self, speed):
         if speed >= 0:
