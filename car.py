@@ -4,7 +4,7 @@ import pigpio
 
 
 
-EN = 18  #  GPIO18 (PWM0)
+EN = 12  #  GPIO18 (PWM0)
 A1 = 23  #  GPIO23
 A2 = 24  #  GPIO24
 SERVO = 13  #  GPIO13 (PWM1)
