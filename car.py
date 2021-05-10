@@ -25,12 +25,12 @@ class Car:
         self.pi.hardware_PWM(EN, PWM_FREQ, speed)
 
     def forward(self):
-        self.pi.write(A1, 1)
-        self.pi.write(A2, 0)
-
-    def backward(self):
         self.pi.write(A1, 0)
         self.pi.write(A2, 1)
+
+    def backward(self):
+        self.pi.write(A1, 1)
+        self.pi.write(A2, 0)
 
     def stop(self):
         self.pi.write(A1, 0)
