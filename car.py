@@ -46,7 +46,7 @@ class Car:
             self.change_speed(speed)
         else:
             self.backward()
-            self.change_speed(speed)
+            self.change_speed(-speed)
 
     def terminate(self):
         self.pi.stop()
