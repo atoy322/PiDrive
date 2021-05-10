@@ -31,7 +31,8 @@ class Preview(Window):
                 break
 
         img = Image.open(io.BytesIO(img_buf))
-        img = img.transpose(Image.FLIP_TOP_BOTTOM)
+        #img = img.transpose(Image.FLIP_TOP_BOTTOM)
+        img = img.transpose(Image.FLIP_LEFT_RIGHT)
         img = ImageData(self.width, self.height, "RGB", img.tobytes("raw", "RGB"))
 
         img.blit(0, 0)
