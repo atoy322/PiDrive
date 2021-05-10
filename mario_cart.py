@@ -61,6 +61,9 @@ while True:
                 if name == "SPEED":
                     speed = int(value)
                     c.speed(speed)
+                if name == "STEER":
+                    angle = int(value)
+                    c.steer(angle)
 
             if out.closed:
                 break
