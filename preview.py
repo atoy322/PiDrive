@@ -15,7 +15,7 @@ class Preview(Window):
         super().__init__(width=width, height=height)
         self.sock = socket.socket()
         self.sock.connect(address)
-        schedule_interval(self.update, 1e-7)
+        schedule_interval(self.update, 1e-3)
 
     def update(self, dt):
         received = 0

@@ -18,7 +18,7 @@ class Preview(Window):
         self.stream_sock = socket.socket()
         self.control_sock.connect((ip, 8080))
         self.stream_sock.connect((ip, 8000))
-        schedule_interval(self.update, 1e-5)
+        schedule_interval(self.update, 1e-3)
 
     def update(self, dt):
         received = 0
@@ -62,5 +62,5 @@ class Preview(Window):
 
 
 if __name__ == "__main__":
-    p = Preview("192.168.32.132", width=640, height=480)
+    p = Preview("192.168.32.132", width=320, height=240)
     pyglet.app.run()
