@@ -32,8 +32,8 @@ stream_server = socket.socket()
 stream_server.bind(("", 8000))
 stream_server.listen(1)
 
-cam = picamera.PiCamera(resolution=(640, 480))
-
+#cam = picamera.PiCamera(resolution=(640, 480))
+cam = picamera.PiCamera(resolution=(320, 240))
 
 while True:
     print("[Server Ready]")
