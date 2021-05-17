@@ -22,7 +22,7 @@ def get_frame(stream_sock):
         if size <= received:
             break
 
-    img = Image.open(io.BytesIO(img_buf))
+    img = Image.open(io.BytesIO(img_buf)).transpose(Image.FLIP_TOP_BOTTOM).transpose(Image.FLIP_LEFT_RIGHT)
 
     return img
 
@@ -33,10 +33,12 @@ c.connect((RASPI_IP, 8080))
 s = socket.socket()
 s.connect((RASPI_IP, 8000))
 
+i = 0
 
 while True:
     frame = get_frame(s)
-    print(frame)
-    c.send(b"STEER:0")
-    time.sleep(0.03)
+    print(i)
+    frame.save(f"train_data/img-{i}.jpg")
+    i += 1
+
 
