@@ -50,6 +50,9 @@ while True:
 
     while True:
         try:
+            if out.closed:
+                break
+            
             commands = control_sock.recvfrom(1024)[0].decode()
             commands = commands.split(",")
 
@@ -63,8 +66,6 @@ while True:
                     angle = int(value)
                     c.steer(angle)
 
-            if out.closed:
-                break
 
         except:
             c.stop()
