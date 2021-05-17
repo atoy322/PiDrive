@@ -1,6 +1,7 @@
 import socket
 import struct
 import io
+import sys
 
 import pyglet
 from pyglet.window import Window
@@ -60,6 +61,10 @@ class Preview(Window):
             self.control_sock.sendto(b"STEER:0", (RASPI_IP, 8080))
         elif symbol == key.RIGHT:
             self.control_sock.sendto(b"STEER:0", (RASPI_IP, 8080))
+
+    def on_close(self):
+        self.control_sock.sendto(b"CLOSE", (RASPI_IP, 8080))
+        sys.exit()
 
 
 if __name__ == "__main__":

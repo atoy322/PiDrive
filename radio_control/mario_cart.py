@@ -25,7 +25,6 @@ class Output:
 
         except:
             print("Connection Reset")
-            raise Exception()
             self.closed = True
 
         return len(buf)
@@ -55,6 +54,10 @@ while True:
                 break
 
             commands = control_sock.recvfrom(1024)[0].decode()
+            
+            if commands == "CLOSE":
+                break
+
             commands = commands.split(",")
 
             for command in commands:
