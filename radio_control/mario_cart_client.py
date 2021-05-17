@@ -64,6 +64,7 @@ class Preview(Window):
 
     def on_close(self):
         self.control_sock.sendto(b"CLOSE", (RASPI_IP, 8080))
+        self.close()
         sys.exit()
 
 
