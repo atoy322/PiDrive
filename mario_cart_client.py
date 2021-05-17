@@ -11,6 +11,8 @@ from PIL import Image
 
 
 
+RASPI_IP = "192.168.183.132"
+
 class Preview(Window):
     def __init__(self, ip, width=720, height=480):
         super().__init__(width=width, height=height)
@@ -62,5 +64,5 @@ class Preview(Window):
 
 
 if __name__ == "__main__":
-    p = Preview("192.168.32.132", width=320, height=240)
+    p = Preview(RASPI_IP, width=320, height=240)
     pyglet.app.run()
