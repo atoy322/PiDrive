@@ -14,7 +14,6 @@ def get_frame(stream_sock):
     img_buf = b""
     size_data = stream_sock.recv(4)
     size = struct.unpack(">I", size_data)[0]
-    print(size)
 
     while True:
         data = stream_sock.recv(size-received)
@@ -23,9 +22,9 @@ def get_frame(stream_sock):
         if size <= received:
             break
 
-        img = Image.open(io.BytesIO(img_buf))
+    img = Image.open(io.BytesIO(img_buf))
 
-        return img
+    return img
 
 
 c = socket.socket()
@@ -38,5 +37,6 @@ s.connect((RASPI_IP, 8000))
 while True:
     frame = get_frame(s)
     print(frame)
-    c.send(b"STEER:30")
-    time.sleep(1/30)
+    c.send(b"STEER:0")
+    time.sleep(0.03)
+
