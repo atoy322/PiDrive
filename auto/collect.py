@@ -59,9 +59,9 @@ class Preview(Window):
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.UP:
-            self.control_sock.send(b"SPEED:70")
+            self.control_sock.send(b"SPEED:100")
         elif symbol == key.DOWN:
-            self.control_sock.send(b"SPEED:-70")
+            self.control_sock.send(b"SPEED:-100")
         elif symbol == key.LEFT:
             self.control_sock.send(b"STEER:-30")
         elif symbol == key.RIGHT:

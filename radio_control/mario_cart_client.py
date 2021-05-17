@@ -16,9 +16,8 @@ RASPI_IP = "192.168.183.132"
 class Preview(Window):
     def __init__(self, ip, width=720, height=480):
         super().__init__(width=width, height=height)
-        self.control_sock = socket.socket()
+        self.control_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.stream_sock = socket.socket()
-        self.control_sock.connect((ip, 8080))
         self.stream_sock.connect((ip, 8000))
         schedule_interval(self.update, 1e-3)
 
@@ -44,23 +43,23 @@ class Preview(Window):
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.UP:
-            self.control_sock.send(b"SPEED:70")
+            self.control_sock.sendto(b"SPEED:70", (RASPI_IP, 8080))
         elif symbol == key.DOWN:
-            self.control_sock.send(b"SPEED:-70")
+            self.control_sock.send(b"SPEED:-70", (RASPI_IP, 8080))
         elif symbol == key.LEFT:
-            self.control_sock.send(b"STEER:-30")
+            self.control_sock.send(b"STEER:-30", (RASPI_IP, 8080))
         elif symbol == key.RIGHT:
-            self.control_sock.send(b"STEER:30")
+            self.control_sock.send(b"STEER:30", (RASPI_IP, 8080))
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.UP:
-            self.control_sock.send(b"SPEED:0")
+            self.control_sock.send(b"SPEED:0", (RASPI_IP, 8080))
         elif symbol == key.DOWN:
-            self.control_sock.send(b"SPEED:0")
+            self.control_sock.send(b"SPEED:0", (RASPI_IP, 8080))
         elif symbol == key.LEFT:
-            self.control_sock.send(b"STEER:0")
+            self.control_sock.send(b"STEER:0", (RASPI_IP, 8080))
         elif symbol == key.RIGHT:
-            self.control_sock.send(b"STEER:0")
+            self.control_sock.send(b"STEER:0", (RASPI_IP, 8080))
 
 
 if __name__ == "__main__":
