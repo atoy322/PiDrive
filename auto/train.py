@@ -22,7 +22,7 @@ def get_frame(stream_sock):
         if size <= received:
             break
 
-    img = Image.open(io.BytesIO(img_buf)).transpose(Image.FLIP_TOP_BOTTOM).transpose(Image.FLIP_LEFT_RIGHT)
+    img = Image.open(io.BytesIO(img_buf))
 
     return img
 
