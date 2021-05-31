@@ -12,7 +12,7 @@ from PIL import Image
 
 
 
-RASPI_IP = "192.168.183.132"
+RASPI_IP = "192.168.17.133"
 
 
 def gen_name(dir):
@@ -63,9 +63,9 @@ class Preview(Window):
         elif symbol == key.DOWN:
             self.control_sock.send(b"SPEED:-100")
         elif symbol == key.LEFT:
-            self.control_sock.send(b"STEER:-30")
+            self.control_sock.send(b"STEER:-20")
         elif symbol == key.RIGHT:
-            self.control_sock.send(b"STEER:30")
+            self.control_sock.send(b"STEER:20")
         elif symbol == key.ENTER:
             name = gen_name("train_data")
             self.img.save(name)

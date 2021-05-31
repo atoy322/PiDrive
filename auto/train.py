@@ -4,6 +4,7 @@ import io
 import time
 
 from PIL import Image
+import numpy as np
 
 
 RASPI_IP = "192.168.17.133"
@@ -27,18 +28,16 @@ def get_frame(stream_sock):
     return img
 
 
-c = socket.socket()
-c.connect((RASPI_IP, 8080))
+ctrl_stream = socket.socket()
+ctrl_stream.connect((RASPI_IP, 8080))
 
-s = socket.socket()
-s.connect((RASPI_IP, 8000))
+data_stream = socket.socket()
+data_stream.connect((RASPI_IP, 8000))
 
-i = 0
+
 
 while True:
-    frame = get_frame(s)
-    print(i)
-    frame.save(f"train_data/img-{i}.jpg")
-    i += 1
+    frame = get_frame(data_stream)
+    array = np.array(frame)
 
-
+    print(array.shape)
