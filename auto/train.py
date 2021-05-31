@@ -6,7 +6,7 @@ import time
 from PIL import Image
 
 
-RASPI_IP = "192.168.183.132"
+RASPI_IP = "192.168.17.133"
 
 
 def get_frame(stream_sock):
