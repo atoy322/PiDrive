@@ -48,9 +48,9 @@ class Preview(Window):
         elif symbol == key.DOWN:
             self.control_sock.sendto(b"SPEED:-70", (RASPI_IP, 8080))
         elif symbol == key.LEFT:
-            self.control_sock.sendto(b"STEER:-30", (RASPI_IP, 8080))
+            self.control_sock.sendto(b"STEER:-20", (RASPI_IP, 8080))
         elif symbol == key.RIGHT:
-            self.control_sock.sendto(b"STEER:30", (RASPI_IP, 8080))
+            self.control_sock.sendto(b"STEER:20", (RASPI_IP, 8080))
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.UP:
