@@ -12,7 +12,7 @@ from PIL import Image
 
 
 
-RASPI_IP = "192.168.183.132"
+RASPI_IP = "192.168.17.133"
 
 class Preview(Window):
     def __init__(self, ip, width=720, height=480):
