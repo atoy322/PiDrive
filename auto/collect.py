@@ -9,11 +9,31 @@ from pyglet.clock import schedule_interval
 from pyglet.image import ImageData
 from pyglet.window import key
 from PIL import Image
-
+import cv2
+import numpy as np
+from chainer import Chain
+from chainer.links import Linear, Convolution2D
+from chainer.functions import relu, softmax_cross_entropy
+from chainer.variable import Variable
 
 
 RASPI_IP = "192.168.17.133"
 
+conv = Convolution2D(3, 1, 3)
+edge_filter = np.array([[
+    [[ 0, -1,  0],
+     [-1,  1,  -1],
+     [ 0, -1,  0]],
+
+    [[ 0, -1,  0],
+     [-1,  1, -1],
+     [ 0, -1,  0]],
+
+    [[ 0, -1,  0],
+     [-1,  1, -1],
+     [ 0, -1,  0]]
+]], dtype=np.float32)
+conv.W = Variable(edge_filter)
 
 def gen_name(dir):
     i = 0
@@ -26,6 +46,29 @@ def gen_name(dir):
 
     return dir + "/" + f"img-{i}.jpg"
 
+
+def detect_line(img):
+    array = np.array(img)
+    sobel_x = cv2.Sobel(array, cv2.CV_32F, 1, 0)
+    sobel_y = cv2.Sobel(array, cv2.CV_32F, 0, 1)
+    sobel = (sobel_x + sobel_y) // 2
+    sobel -= sobel.min()
+    sobel = sobel / sobel.max()
+    sobel *= 255
+    sobel = sobel.astype(np.uint8)
+    sobel = Image.fromarray(sobel).convert("L").convert("RGB")
+    return sobel
+
+def detect_line_conv(img):
+    w, h = img.size
+    array = np.array(img, dtype=np.float32)
+    array = array.transpose(2, 0, 1).reshape(1, 3, h, w)
+    array = conv(array)[0][0].array.transpose(1, 0)
+    array -= array.min()
+    array = array / array.max()
+    array *= 255
+    img = Image.fromarray(array.astype(np.uint8)).convert("RGB")
+    return img
 
 
 class Preview(Window):
@@ -53,6 +96,7 @@ class Preview(Window):
         img = Image.open(io.BytesIO(img_buf))
         self.img = img.transpose(Image.FLIP_TOP_BOTTOM).transpose(Image.FLIP_LEFT_RIGHT)
         img = img.transpose(Image.FLIP_LEFT_RIGHT).resize((self.width, self.height))
+        img = detect_line(img)
         img = ImageData(self.width, self.height, "RGB", img.tobytes("raw", "RGB"))
 
         img.blit(0, 0)
@@ -68,8 +112,8 @@ class Preview(Window):
             self.control_sock.send(b"STEER:20")
         elif symbol == key.ENTER:
             name = gen_name("train_data")
-            self.img.save(name)
-            print(name)
+            sobel = detect_line(self.img)
+            sobel.save(name)
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.UP:
