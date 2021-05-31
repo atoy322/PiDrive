@@ -17,7 +17,7 @@ ctx = cl.create_some_context()
 queue = cl.CommandQueue(ctx)
 mf = cl.mem_flags
 
-host_a = np.arange(10000000, dtype=np.float32)
+host_a = np.arange(1000000, dtype=np.float32)
 host_buf = np.empty_like(host_a)
 
 dev_a = cl.Buffer(ctx, flags=mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=host_a)
