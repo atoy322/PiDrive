@@ -4,7 +4,7 @@ import struct
 
 import picamera
 
-from car import Car
+from car_ctrl.car import Car
 
 
 
