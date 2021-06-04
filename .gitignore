@@ -1,2 +1,4 @@
 .vscode
-auto/train_data
+__pycache__
+train_data
+nohup.out
