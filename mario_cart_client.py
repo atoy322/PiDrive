@@ -10,9 +10,9 @@ from pyglet.image import ImageData
 from pyglet.window import key
 from PIL import Image
 
+from raspi_ip import IP
 
 
-RASPI_IP = "192.168.17.133"
 
 class Preview(Window):
     def __init__(self, ip, width=720, height=480):
@@ -44,30 +44,31 @@ class Preview(Window):
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.UP:
-            self.control_sock.sendto(b"SPEED:70", (RASPI_IP, 8080))
+            self.control_sock.sendto(b"SPEED:70", (IP, 8080))
         elif symbol == key.DOWN:
-            self.control_sock.sendto(b"SPEED:-70", (RASPI_IP, 8080))
+            self.control_sock.sendto(b"SPEED:-70", (IP, 8080))
         elif symbol == key.LEFT:
-            self.control_sock.sendto(b"STEER:-20", (RASPI_IP, 8080))
+            self.control_sock.sendto(b"STEER:-20", (IP, 8080))
         elif symbol == key.RIGHT:
-            self.control_sock.sendto(b"STEER:20", (RASPI_IP, 8080))
+            self.control_sock.sendto(b"STEER:20", (IP, 8080))
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.UP:
-            self.control_sock.sendto(b"SPEED:0", (RASPI_IP, 8080))
+            self.control_sock.sendto(b"SPEED:0", (IP, 8080))
         elif symbol == key.DOWN:
-            self.control_sock.sendto(b"SPEED:0", (RASPI_IP, 8080))
+            self.control_sock.sendto(b"SPEED:0", (IP, 8080))
         elif symbol == key.LEFT:
-            self.control_sock.sendto(b"STEER:0", (RASPI_IP, 8080))
+            self.control_sock.sendto(b"STEER:0", (IP, 8080))
         elif symbol == key.RIGHT:
-            self.control_sock.sendto(b"STEER:0", (RASPI_IP, 8080))
+            self.control_sock.sendto(b"STEER:0", (IP, 8080))
 
     def on_close(self):
-        self.control_sock.sendto(b"CLOSE", (RASPI_IP, 8080))
+        self.control_sock.sendto(b"CLOSE", (IP, 8080))
         self.close()
         sys.exit()
 
 
 if __name__ == "__main__":
-    p = Preview(RASPI_IP, width=320, height=240)
+    print(IP)
+    p = Preview(IP, width=320, height=240)
     pyglet.app.run()

@@ -16,8 +16,8 @@ from chainer.links import Linear, Convolution2D
 from chainer.functions import relu, softmax_cross_entropy
 from chainer.variable import Variable
 
+from raspi_ip import IP
 
-RASPI_IP = "192.168.17.133"
 
 conv = Convolution2D(3, 1, 3)
 edge_filter = np.array([[
@@ -127,5 +127,5 @@ class Preview(Window):
 
 
 if __name__ == "__main__":
-    p = Preview(RASPI_IP, width=320, height=240)
+    p = Preview(IP, width=320, height=240)
     pyglet.app.run()

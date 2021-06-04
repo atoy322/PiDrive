@@ -8,8 +8,9 @@ from pyglet.clock import schedule_interval
 from pyglet.image import ImageData
 from PIL import Image
 
+from raspi_ip import IP
 
-RASPI_IP = "192.168.183.132"
+
 
 class Preview(Window):
     def __init__(self, address, width=720, height=480):
@@ -40,5 +41,5 @@ class Preview(Window):
 
 
 if __name__ == "__main__":
-    p = Preview((RASPI_IP, 8000), width=320, height=240)
+    p = Preview((IP, 8000), width=320, height=240)
     pyglet.app.run()
