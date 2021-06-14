@@ -6,8 +6,8 @@ import time
 from PIL import Image
 import numpy as np
 
+from raspi_ip import IP
 
-RASPI_IP = "192.168.17.133"
 
 
 def get_frame(stream_sock):
@@ -29,10 +29,10 @@ def get_frame(stream_sock):
 
 
 ctrl_stream = socket.socket()
-ctrl_stream.connect((RASPI_IP, 8080))
+ctrl_stream.connect((IP, 8080))
 
 data_stream = socket.socket()
-data_stream.connect((RASPI_IP, 8000))
+data_stream.connect((IP, 8000))
 
 
 
