@@ -39,27 +39,18 @@ def image_preprocess(img):
     sobel = sobel / sobel.max()
     sobel *= 255
     sobel = sobel.astype(np.uint8)
-    sobel = Image.fromarray(sobel).convert("L").convert("RGB")
+    sobel = Image.fromarray(sobel).convert("RGB")
     return sobel
 """
 def image_preprocess(img):
+    img = img.convert("L")
     array = np.array(img, dtype=np.int32)
-    array = array.reshape(W*H, -1)
     res = np.zeros_like(array)
-    n = array.shape[0]
 
-    r = array[:, 0].copy()
-    g = array[:, 1].copy()
-    b = array[:, 2].copy()
-
-    half_mask = np.zeros(n, dtype=np.bool8)
-    half_mask[:n//2] = True
-    white_mask = (r + g + b) > 300
-    res[white_mask * half_mask] = [255, 0, 0]
-    res = res.reshape(H, W, 3)
+    res[array > np.average(array) + 30] = 255
 
     img = Image.fromarray(res.astype(np.uint8))
-    return img
+    return img.convert("RGB")
 
 
 class Preview(Window):
@@ -91,7 +82,7 @@ class Preview(Window):
         self.img = img.transpose(Image.FLIP_TOP_BOTTOM) # To save
         self.preprocessed = preprocessed.transpose(Image.FLIP_TOP_BOTTOM) # To save
 
-        #img = preprocessed
+        img = preprocessed
 
         img = ImageData(self.width, self.height, "RGB", img.tobytes("raw", "RGB"))
         img.blit(0, 0)
