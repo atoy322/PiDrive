@@ -11,30 +11,13 @@ from pyglet.window import key
 from PIL import Image
 import cv2
 import numpy as np
-#from chainer import Chain
-#from chainer.links import Linear, Convolution2D
-#from chainer.functions import relu, softmax_cross_entropy
-#from chainer.variable import Variable
 
 from raspi_ip import IP
 
-"""
-conv = Convolution2D(3, 1, 3)
-edge_filter = np.array([[
-    [[ 0, -1,  0],
-     [-1,  1,  -1],
-     [ 0, -1,  0]],
 
-    [[ 0, -1,  0],
-     [-1,  1, -1],
-     [ 0, -1,  0]],
+W = 320
+H = 240
 
-    [[ 0, -1,  0],
-     [-1,  1, -1],
-     [ 0, -1,  0]]
-]], dtype=np.float32)
-conv.W = Variable(edge_filter)
-"""
 def gen_name(dir):
     i = 0
     
@@ -46,8 +29,8 @@ def gen_name(dir):
 
     return dir + "/" + f"img-{i}.jpg"
 
-
-def detect_line(img):
+"""
+def image_preprocess(img):
     array = np.array(img)
     sobel_x = cv2.Sobel(array, cv2.CV_32F, 1, 0)
     sobel_y = cv2.Sobel(array, cv2.CV_32F, 0, 1)
@@ -59,17 +42,25 @@ def detect_line(img):
     sobel = Image.fromarray(sobel).convert("L").convert("RGB")
     return sobel
 """
-def detect_line_conv(img):
-    w, h = img.size
-    array = np.array(img, dtype=np.float32)
-    array = array.transpose(2, 0, 1).reshape(1, 3, h, w)
-    array = conv(array)[0][0].array.transpose(1, 0)
-    array -= array.min()
-    array = array / array.max()
-    array *= 255
-    img = Image.fromarray(array.astype(np.uint8)).convert("RGB")
+def image_preprocess(img):
+    array = np.array(img, dtype=np.int32)
+    array = array.reshape(W*H, -1)
+    res = np.zeros_like(array)
+    n = array.shape[0]
+
+    r = array[:, 0].copy()
+    g = array[:, 1].copy()
+    b = array[:, 2].copy()
+
+    half_mask = np.zeros(n, dtype=np.bool8)
+    half_mask[:n//2] = True
+    white_mask = (r + g + b) > 300
+    res[white_mask * half_mask] = [255, 0, 0]
+    res = res.reshape(H, W, 3)
+
+    img = Image.fromarray(res.astype(np.uint8))
     return img
-"""
+
 
 class Preview(Window):
     def __init__(self, ip, width=720, height=480):
@@ -94,11 +85,15 @@ class Preview(Window):
                 break
 
         img = Image.open(io.BytesIO(img_buf))
-        self.img = img.transpose(Image.FLIP_TOP_BOTTOM).transpose(Image.FLIP_LEFT_RIGHT)
-        img = img.transpose(Image.FLIP_LEFT_RIGHT).resize((self.width, self.height))
-        img = detect_line(img)
-        img = ImageData(self.width, self.height, "RGB", img.tobytes("raw", "RGB"))
+        img = img.transpose(Image.FLIP_LEFT_RIGHT) # To show
+        preprocessed = image_preprocess(img) # To show
 
+        self.img = img.transpose(Image.FLIP_TOP_BOTTOM) # To save
+        self.preprocessed = preprocessed.transpose(Image.FLIP_TOP_BOTTOM) # To save
+
+        #img = preprocessed
+
+        img = ImageData(self.width, self.height, "RGB", img.tobytes("raw", "RGB"))
         img.blit(0, 0)
 
     def on_key_press(self, symbol, modifiers):
@@ -112,8 +107,8 @@ class Preview(Window):
             self.control_sock.send(b"STEER:20")
         elif symbol == key.ENTER:
             name = gen_name("train_data")
-            sobel = self.img # detect_line(self.img)
-            sobel.save(name)
+            self.img.save(name)
+            print(name)
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.UP:
@@ -128,5 +123,5 @@ class Preview(Window):
 
 if __name__ == "__main__":
     print(IP)
-    p = Preview(IP, width=320, height=240)
+    p = Preview(IP, width=W, height=H)
     pyglet.app.run()
