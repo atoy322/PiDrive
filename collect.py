@@ -76,8 +76,8 @@ class Preview(Window):
         super().__init__(width=width, height=height)
         self.control_sock = socket.socket()
         self.stream_sock = socket.socket()
-        self.control_sock.connect((ip, 8080))
         self.stream_sock.connect((ip, 8000))
+        self.control_sock.connect((ip, 8080))
         schedule_interval(self.update, 1e-3)
 
     def update(self, dt):
@@ -112,7 +112,7 @@ class Preview(Window):
             self.control_sock.send(b"STEER:20")
         elif symbol == key.ENTER:
             name = gen_name("train_data")
-            sobel = detect_line(self.img)
+            sobel = self.img # detect_line(self.img)
             sobel.save(name)
 
     def on_key_release(self, symbol, modifiers):
@@ -127,5 +127,6 @@ class Preview(Window):
 
 
 if __name__ == "__main__":
+    print(IP)
     p = Preview(IP, width=320, height=240)
     pyglet.app.run()
