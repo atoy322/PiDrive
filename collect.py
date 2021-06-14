@@ -11,14 +11,14 @@ from pyglet.window import key
 from PIL import Image
 import cv2
 import numpy as np
-from chainer import Chain
-from chainer.links import Linear, Convolution2D
-from chainer.functions import relu, softmax_cross_entropy
-from chainer.variable import Variable
+#from chainer import Chain
+#from chainer.links import Linear, Convolution2D
+#from chainer.functions import relu, softmax_cross_entropy
+#from chainer.variable import Variable
 
 from raspi_ip import IP
 
-
+"""
 conv = Convolution2D(3, 1, 3)
 edge_filter = np.array([[
     [[ 0, -1,  0],
@@ -34,7 +34,7 @@ edge_filter = np.array([[
      [ 0, -1,  0]]
 ]], dtype=np.float32)
 conv.W = Variable(edge_filter)
-
+"""
 def gen_name(dir):
     i = 0
     
@@ -58,7 +58,7 @@ def detect_line(img):
     sobel = sobel.astype(np.uint8)
     sobel = Image.fromarray(sobel).convert("L").convert("RGB")
     return sobel
-
+"""
 def detect_line_conv(img):
     w, h = img.size
     array = np.array(img, dtype=np.float32)
@@ -69,7 +69,7 @@ def detect_line_conv(img):
     array *= 255
     img = Image.fromarray(array.astype(np.uint8)).convert("RGB")
     return img
-
+"""
 
 class Preview(Window):
     def __init__(self, ip, width=720, height=480):
