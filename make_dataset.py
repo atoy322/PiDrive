@@ -17,8 +17,11 @@ H = 240
 
 DATAPATH = "train_data"
 LAYERS = (220, 180, 140)
+LAYER_COLOR = (237, 188, 90)
+LINE_COLOR = (255, 255, 255)
+LINE_WIDTH = 3
 N = 2
-SLIDER_COLOR = (255, 0, 0)
+SLIDER_COLOR = (236, 112, 54)
 SLIDER_SIZE = 10
 TEXT_COLOR = (0, 255, 0, 255)
 TEXT_SIZE = 30
@@ -37,12 +40,12 @@ class Maker(Window):
 
         self.batch = Batch()
 
-        self.layer_1 = Line(0, self.height-LAYERS[0]*N, self.width, self.height-LAYERS[0]*N, batch=self.batch)
-        self.layer_2 = Line(0, self.height-LAYERS[1]*N, self.width, self.height-LAYERS[1]*N, batch=self.batch)
-        self.layer_3 = Line(0, self.height-LAYERS[2]*N, self.width, self.height-LAYERS[2]*N, batch=self.batch)
+        self.layer_1 = Line(0, self.height-LAYERS[0]*N, self.width, self.height-LAYERS[0]*N, color=LAYER_COLOR, batch=self.batch)
+        self.layer_2 = Line(0, self.height-LAYERS[1]*N, self.width, self.height-LAYERS[1]*N, color=LAYER_COLOR, batch=self.batch)
+        self.layer_3 = Line(0, self.height-LAYERS[2]*N, self.width, self.height-LAYERS[2]*N, color=LAYER_COLOR, batch=self.batch)
 
-        self.line_1_2 = Line(self.width//2, self.height-LAYERS[0]*N, self.width//2, self.height-LAYERS[1]*N, batch=self.batch)
-        self.line_2_3 = Line(self.width//2, self.height-LAYERS[1]*N, self.width//2, self.height-LAYERS[2]*N, batch=self.batch)
+        self.line_1_2 = Line(self.width//2, self.height-LAYERS[0]*N, self.width//2, self.height-LAYERS[1]*N, color=LINE_COLOR, width=LINE_WIDTH, batch=self.batch)
+        self.line_2_3 = Line(self.width//2, self.height-LAYERS[1]*N, self.width//2, self.height-LAYERS[2]*N, color=LINE_COLOR, width=LINE_WIDTH, batch=self.batch)
 
         self.slider_1 = Circle(self.width//2, self.height-LAYERS[0]*N, SLIDER_SIZE, color=SLIDER_COLOR, batch=self.batch)
         self.slider_2 = Circle(self.width//2, self.height-LAYERS[1]*N, SLIDER_SIZE, color=SLIDER_COLOR, batch=self.batch)
@@ -53,6 +56,11 @@ class Maker(Window):
         self.slider_3_pressed = False
 
         self.label = Label("", "Source Code Pro", TEXT_SIZE, True, color=TEXT_COLOR, x=0, y=self.height-TEXT_SIZE, batch=self.batch)
+
+        if not os.path.exists(EXPORT_PATH):
+            joblib.dump([[], []], EXPORT_PATH)
+        
+        self.dataset = joblib.load(EXPORT_PATH)
 
     def on_draw(self):
         self.clear()
@@ -98,7 +106,13 @@ class Maker(Window):
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.ENTER:
-            print(self.slider_1.x//N, self.slider_2.x//N, self.slider_3.x//N)
+            l1, l2, l3 = self.slider_1.x//N, self.slider_2.x//N, self.slider_3.x//N
+            print(l1, l2, l3)
+            img = self.image.crop((0, H//2, W, H))
+            img = img.resize((img.width//5, img.height//5))
+            array = np.array(img)
+            self.dataset[0].append(array)
+            self.dataset[1].append([l1//5, l2//5, l3//5]) # layers: (20, 12, 4)
 
             self.index += 1
             if not os.path.exists(DATAPATH + f"/img-{self.index}.jpg"):
@@ -110,6 +124,12 @@ class Maker(Window):
         img = img.resize((self.width, self.height))
         img = ImageData(self.width, self.height, "RGB", img.tobytes("raw", "RGB"))
         img.blit(0, 0)
+
+    def on_close(self):
+        joblib.dump(self.dataset, EXPORT_PATH)
+        print("Dumped!")
+        super().on_close()
+
 
 
 if __name__ == "__main__":
