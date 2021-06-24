@@ -29,18 +29,13 @@ def gen_name(dir):
 
     return dir + "/" + f"img-{i}.jpg"
 
-"""
+
 def image_preprocess(img):
+    img = img.convert("L")
     array = np.array(img)
-    sobel_x = cv2.Sobel(array, cv2.CV_32F, 1, 0)
-    sobel_y = cv2.Sobel(array, cv2.CV_32F, 0, 1)
-    sobel = (sobel_x + sobel_y) // 2
-    sobel -= sobel.min()
-    sobel = sobel / sobel.max()
-    sobel *= 255
-    sobel = sobel.astype(np.uint8)
-    sobel = Image.fromarray(sobel).convert("RGB")
-    return sobel
+    edge = cv2.Canny(array, 100, 100)
+    img = Image.fromarray(edge)
+    return img.convert("RGB")
 """
 def image_preprocess(img):
     img = img.convert("L")
@@ -51,7 +46,7 @@ def image_preprocess(img):
 
     img = Image.fromarray(res.astype(np.uint8))
     return img.convert("RGB")
-
+"""
 
 class Preview(Window):
     def __init__(self, ip, width=720, height=480):

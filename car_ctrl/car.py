@@ -11,7 +11,7 @@ SERVO = 13  #  GPIO13 (PWM1)
 
 PWM_FREQ = 1000  # 1 kHz
 
-STEER_ERROR = 0
+STEER_ERROR = -5
 
 class Car:
     def __init__(self):
@@ -38,7 +38,7 @@ class Car:
         self.pi.write(A2, 0)
 
     def steer(self, angle):
-        assert angle <= 90 or angle >= -90
+        assert angle <= 30 or angle >= -30
         self.pi.set_servo_pulsewidth(SERVO, 1450 + angle*10 + STEER_ERROR)
 
     def speed(self, speed):
