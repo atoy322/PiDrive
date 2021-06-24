@@ -21,8 +21,8 @@ class LineDetector(Chain):
             self.l2 = Linear(100, 3)
 
     def forward(self, x):
-        h = self.conv_1(x)
-        h = self.l1(h)
+        h = relu(self.conv_1(x))
+        h = relu(self.l1(h))
         y = self.l2(h)
         return y
 
