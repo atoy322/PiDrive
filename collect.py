@@ -88,7 +88,7 @@ class Preview(Window):
             self.control_sock.send(b"STEER:20")
         elif symbol == key.ENTER:
             name = gen_name("train_data")
-            self.img = self.img.crop((0, H//2, W, H)).resize((W//5, H//10))
+            #self.img = self.img.crop((0, H//2, W, H)).resize((W//5, H//10))
             self.img.save(name)
             print(name)
 
