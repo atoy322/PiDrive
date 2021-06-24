@@ -39,18 +39,14 @@ def image_preprocess(img):
 """
 def image_preprocess(img):
     img = img.convert("L")
-    array = np.array(img, dtype=np.int32)
-    res = np.zeros_like(array)
-
-    res[array > np.average(array) + 30] = 255
-
-    img = Image.fromarray(res.astype(np.uint8))
-    return img.convert("RGB")
+    base = Image.new("L", (img.width, img.height), 0)
+    base.paste(img.crop((0, img.height//2, img.width, img.height)), (0, img.height//2))
+    return base.convert("RGB")
 """
 
 class Preview(Window):
     def __init__(self, ip, width=720, height=480):
-        super().__init__(width=width, height=height)
+        super().__init__(width=width*2, height=height)
         self.control_sock = socket.socket()
         self.stream_sock = socket.socket()
         self.stream_sock.connect((ip, 8000))
@@ -72,15 +68,14 @@ class Preview(Window):
 
         img = Image.open(io.BytesIO(img_buf))
         img = img.transpose(Image.FLIP_LEFT_RIGHT) # To show
-        preprocessed = image_preprocess(img) # To show
-
         self.img = img.transpose(Image.FLIP_TOP_BOTTOM) # To save
-        self.preprocessed = preprocessed.transpose(Image.FLIP_TOP_BOTTOM) # To save
+        self.preprocessed = image_preprocess(self.img) # To save
+        preprocessed = self.preprocessed.transpose(Image.FLIP_TOP_BOTTOM) # To show
 
-        img = preprocessed
-
-        img = ImageData(self.width, self.height, "RGB", img.tobytes("raw", "RGB"))
+        img = ImageData(W, H, "RGB", img.tobytes("raw", "RGB"))
+        preprocessed = ImageData(W, H, "RGB", preprocessed.tobytes("raw", "RGB"))
         img.blit(0, 0)
+        preprocessed.blit(W, 0)
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.UP:
@@ -93,6 +88,7 @@ class Preview(Window):
             self.control_sock.send(b"STEER:20")
         elif symbol == key.ENTER:
             name = gen_name("train_data")
+            self.img = self.img.crop((0, H//2, W, H)).resize((W//5, H//10))
             self.img.save(name)
             print(name)
 
