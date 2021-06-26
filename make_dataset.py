@@ -117,6 +117,24 @@ class Maker(Window):
             self.index += 1
             if not os.path.exists(DATAPATH + f"/img-{self.index}.jpg"):
                 self.index = 0
+        
+        elif symbol == key.RIGHT:
+            self.slider_1.x += 10
+            self.slider_2.x += 10
+            self.slider_3.x += 10
+            self.line_1_2.x += 10
+            self.line_1_2.x2 += 10
+            self.line_2_3.x += 10
+            self.line_2_3.x2 += 10
+        
+        elif symbol == key.LEFT:
+            self.slider_1.x -= 10
+            self.slider_2.x -= 10
+            self.slider_3.x -= 10
+            self.line_1_2.x -= 10
+            self.line_1_2.x2 -= 10
+            self.line_2_3.x -= 10
+            self.line_2_3.x2 -= 10
 
     def draw_image(self):
         self.image = Image.open(DATAPATH + f"/img-{self.index}.jpg")

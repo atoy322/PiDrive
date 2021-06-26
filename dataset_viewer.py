@@ -17,7 +17,7 @@ while True:
     img = cv2.circle(img, (y[i][1]*10, 12*10), 10, (0, 0, 255), -1)
     img = cv2.circle(img, (y[i][2]*10, 4*10), 10, (0, 0, 255), -1)
 
-    cv2.imshow("", img)
+    cv2.imshow(f"Frame: {i}", img)
     key = cv2.waitKey()
     if key == 13: break
     if key == ord("n"): i += 1
