@@ -4,3 +4,4 @@ train_data
 nohup.out
 *.ipynb
 *.dataset
+build
