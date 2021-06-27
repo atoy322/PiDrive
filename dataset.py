@@ -8,6 +8,6 @@ def load(filename):
     X = np.array(X, dtype=np.float32)
     y = np.array(y, dtype=np.float32)
 
-    X /= X.max()
+    X /= 255
 
     return X, y
