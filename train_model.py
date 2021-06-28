@@ -1,34 +1,18 @@
-from chainer import Chain
-from chainer.links import Linear, Convolution2D
-from chainer.functions import relu, mean_squared_error
+from chainer.functions import mean_squared_error
 from chainer.optimizers import Adam
+from chainer.serializers import save_npz
 import numpy as np
 
 import dataset
+from model import LineDetector
 
 
-N_ITER = 1000
+N_ITER = 3000
 BATCH_SIZE = 10
 
 
-class LineDetector(Chain):
-    def __init__(self):
-        super().__init__()
-
-        with self.init_scope():
-            self.conv_1 = Convolution2D(3, 1, 3)
-            self.l1 = Linear(1364, 100)
-            self.l2 = Linear(100, 3)
-
-    def forward(self, x):
-        h = relu(self.conv_1(x))
-        h = relu(self.l1(h))
-        y = self.l2(h)
-        return y
-
-
 if __name__ == "__main__":
-    X, t = dataset.load("Line.dataset")
+    X, t = dataset.load("Line2.dataset")
     X = X.transpose(0, 3, 1, 2) # (N, 24, 64, 3) -> (N, 3, 24, 64)
     print(X.shape)
 
@@ -37,19 +21,25 @@ if __name__ == "__main__":
     adam.setup(model)
 
     for i in range(N_ITER):
-        model.cleargrads()
+        try:
+            model.cleargrads()
 
-        batch_mask = np.random.choice(X.shape[0], 10)
-        X_batch = X[batch_mask]
-        t_batch = t[batch_mask]
+            batch_mask = np.random.choice(X.shape[0], BATCH_SIZE)
+            X_batch = X[batch_mask]
+            t_batch = t[batch_mask]
 
-        y_batch = model(X_batch)
+            y_batch = model(X_batch)
 
-        loss = mean_squared_error(y_batch, t_batch)
-        print(loss.array)
+            loss = mean_squared_error(y_batch, t_batch)
 
-        loss.backward()
-        adam.update()
+            if not i % BATCH_SIZE:
+                print(loss.array)
 
-    from ptpython.repl import embed
-    embed(globals(), locals())
+            loss.backward()
+            adam.update()
+        except KeyboardInterrupt:
+            break
+
+    save_npz("model.npz", model)
+    # from ptpython.repl import embed
+    # embed(globals(), locals())
