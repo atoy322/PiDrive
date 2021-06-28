@@ -16,9 +16,9 @@ while True:
     img = X[i]
     img = cv2.resize(img, (640, 240))
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = cv2.circle(img, (int(y[i][0].array)*10, 20*10), 10, (0, 0, 255), -1)
-    img = cv2.circle(img, (int(y[i][1].array)*10, 12*10), 10, (0, 0, 255), -1)
-    img = cv2.circle(img, (int(y[i][2].array)*10, 4*10), 10, (0, 0, 255), -1)
+    img = cv2.circle(img, (int(y[i][0].array*24)*10, 20*10), 10, (0, 0, 255), -1)
+    img = cv2.circle(img, (int(y[i][1].array*24)*10, 12*10), 10, (0, 0, 255), -1)
+    img = cv2.circle(img, (int(y[i][2].array*24)*10, 4*10), 10, (0, 0, 255), -1)
 
     cv2.imshow("", img)
     key = cv2.waitKey()

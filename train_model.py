@@ -1,4 +1,4 @@
-from chainer.functions import mean_squared_error
+from chainer.functions import mean_squared_error, accuracy
 from chainer.optimizers import Adam
 from chainer.serializers import save_npz
 import numpy as np
@@ -7,12 +7,13 @@ import dataset
 from model import LineDetector
 
 
-N_ITER = 3000
+N_ITER = 7000
 BATCH_SIZE = 10
 
 
 if __name__ == "__main__":
     X, t = dataset.load("Line2.dataset")
+    t/=24
     X = X.transpose(0, 3, 1, 2) # (N, 24, 64, 3) -> (N, 3, 24, 64)
     print(X.shape)
 
@@ -33,7 +34,7 @@ if __name__ == "__main__":
             loss = mean_squared_error(y_batch, t_batch)
 
             if not i % BATCH_SIZE:
-                print(loss.array)
+                print("Loss: {:5.4f}".format(loss.array))
 
             loss.backward()
             adam.update()
