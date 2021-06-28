@@ -11,7 +11,7 @@ SERVO = 13  #  GPIO13 (PWM1)
 
 PWM_FREQ = 1000  # 1 kHz
 
-STEER_ERROR = -10
+STEER_ERROR = -15
 
 class Car:
     def __init__(self):
