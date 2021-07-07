@@ -7,10 +7,10 @@ class LineDetector(Chain):
         super().__init__()
 
         with self.init_scope():
-            self.conv_1 = Convolution2D(3, 3, 3)
+            self.conv_1 = Convolution2D(3, 1, 3)
             #self.conv_2 = Convolution2D(3, 1, 3)
-            self.l1 = Linear(4092, 100)
-            self.l2 = Linear(100, 3)
+            self.l1 = Linear(1364, 50)
+            self.l2 = Linear(50, 3)
 
     def forward(self, x):
         h = relu(self.conv_1(x))
