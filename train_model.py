@@ -13,10 +13,10 @@ BATCH_SIZE = 30
 
 
 if __name__ == "__main__":
-    X, t = dataset.load("Line.dataset") # Line2, 3
+    X, t = dataset.load("Line0.dataset") # Line2, 3
     X_test, t_test = dataset.load("Line4.dataset") # for test
-    t/=24
-    t_test/=24
+    #t/=24
+    #t_test/=24
     X = X.transpose(0, 3, 1, 2) # (N, 24, 64, 3) -> (N, 3, 24, 64)
     X_test = X_test.transpose(0, 3, 1, 2) # (N, 24, 64, 3) -> (N, 3, 24, 64)
     print(X.shape)

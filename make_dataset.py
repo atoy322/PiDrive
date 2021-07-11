@@ -108,8 +108,8 @@ class Maker(Window):
         if symbol == key.ENTER:
             l1, l2, l3 = self.slider_1.x//N, self.slider_2.x//N, self.slider_3.x//N
             print(l1, l2, l3)
-            img = self.image.crop((0, H//2, W, H))
-            img = img.resize((img.width//5, img.height//5))
+            img = self.image.crop((0, H//2, W, H)) # (320, 120)
+            img = img.resize((img.width//5, img.height//5)) # (64, 24)
             array = np.array(img)
             self.dataset[0].append(array)
             self.dataset[1].append([l1//5, l2//5, l3//5]) # layers: (20, 12, 4)
@@ -144,7 +144,7 @@ class Maker(Window):
         img.blit(0, 0)
 
     def on_close(self):
-        joblib.dump(self.dataset, EXPORT_PATH)
+        #joblib.dump(self.dataset, EXPORT_PATH)
         print("Dumped!")
         super().on_close()
 
