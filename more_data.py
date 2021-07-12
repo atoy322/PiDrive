@@ -31,10 +31,12 @@ def blur(img):
 
 
 
-X, y = joblib.load("Line.dataset")
+X, y = joblib.load("Line0.dataset")
+X = np.array(X, dtype=np.float32)
+y = np.array(y)
 Xb = blur(X)
 Xn = add_noise(X)
-
+print(X.shape, y.shape)
 X = np.concatenate([X, Xb, Xn])
 y = np.concatenate([y, y, y])
 
