@@ -5,3 +5,5 @@ nohup.out
 *.ipynb
 *.dataset
 build
+*.exe
+*.apk

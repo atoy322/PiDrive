@@ -57,6 +57,9 @@ while True:
             print(commands)
 
             for command in commands:
+                if command.count(":") != 1:
+                    break
+
                 name, value = command.split(":")
 
                 if name == "SPEED":
