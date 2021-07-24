@@ -1,7 +1,7 @@
 import socket
 import struct
 import io
-import os
+import time
 
 import pyglet
 from pyglet.window import Window
@@ -18,31 +18,13 @@ from raspi_ip import IP
 W = 320
 H = 240
 
-def gen_name(dir):
-    i = 0
-    
-    while True:
-        if not os.path.exists(dir + "/" + f"img-{i}.jpg"):
-            break
-
-        i += 1
-
-    return dir + "/" + f"img-{i}.jpg"
-
-
 def image_preprocess(img):
     img = img.convert("L")
     array = np.array(img)
     edge = cv2.Canny(array, 100, 100)
     img = Image.fromarray(edge)
     return img.convert("RGB")
-"""
-def image_preprocess(img):
-    img = img.convert("L")
-    base = Image.new("L", (img.width, img.height), 0)
-    base.paste(img.crop((0, img.height//2, img.width, img.height)), (0, img.height//2))
-    return base.convert("RGB")
-"""
+
 
 class Preview(Window):
     def __init__(self, ip, width=720, height=480):
@@ -87,10 +69,7 @@ class Preview(Window):
         elif symbol == key.RIGHT:
             self.control_sock.send(b"STEER:20")
         elif symbol == key.ENTER:
-            name = gen_name("train_data")
-            #self.img = self.img.crop((0, H//2, W, H)).resize((W//5, H//10))
-            self.img.save(name)
-            print(name)
+            self.img.save(f"train_data/{time.time()}.jpg")
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.UP:

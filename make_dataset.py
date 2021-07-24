@@ -22,11 +22,13 @@ LINE_COLOR = (255, 255, 255)
 LINE_WIDTH = 3
 N = 2
 SLIDER_COLOR = (236, 112, 54)
+
+
 SLIDER_SIZE = 10
 TEXT_COLOR = (0, 255, 0, 255)
 TEXT_SIZE = 30
 
-EXPORT_PATH = "Line.dataset"
+EXPORT_PATH = DATAPATH + "/" + "Line.dataset"
 
 
 class Maker(Window):
@@ -36,7 +38,8 @@ class Maker(Window):
         self.position = (0, 0)
 
         self.index = 0
-        self.image = Image.open(DATAPATH + f"/img-{self.index}.jpg")
+        self.images = [i for i in os.listdir(DATAPATH) if i[-3:] == "jpg"]
+        self.image = Image.open(DATAPATH + f"/{self.images[self.index]}")
 
         self.batch = Batch()
 
@@ -65,7 +68,7 @@ class Maker(Window):
     def on_draw(self):
         self.clear()
         self.draw_image()
-        self.label.text = "{:2d}/{:2d}  ({:3d}, {:3d})".format(self.index+1, len(os.listdir(DATAPATH)), self.position[0]//N, H - self.position[1]//N)
+        self.label.text = "{:2d}/{:2d}  ({:3d}, {:3d})".format(self.index+1, len(self.images), self.position[0]//N, H - self.position[1]//N)
         self.batch.draw()
 
     def on_mouse_press(self, x, y, button, modifiers):
@@ -115,7 +118,7 @@ class Maker(Window):
             self.dataset[1].append([l1//5, l2//5, l3//5]) # layers: (20, 12, 4)
 
             self.index += 1
-            if not os.path.exists(DATAPATH + f"/img-{self.index}.jpg"):
+            if self.index == len(self.images):
                 self.index = 0
         
         elif symbol == key.RIGHT:
@@ -137,7 +140,7 @@ class Maker(Window):
             self.line_2_3.x2 -= 10
 
     def draw_image(self):
-        self.image = Image.open(DATAPATH + f"/img-{self.index}.jpg")
+        self.image = Image.open(DATAPATH + f"/{self.images[self.index]}")
         img = self.image.transpose(Image.FLIP_TOP_BOTTOM)
         img = img.resize((self.width, self.height))
         img = ImageData(self.width, self.height, "RGB", img.tobytes("raw", "RGB"))
