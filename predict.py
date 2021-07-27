@@ -46,11 +46,11 @@ def image_preprocess(img):
 """
 def image_preprocess(img):
     img = img.crop((0, img.height//2, img.width, img.height))
-    img = img.resize() #################################################
+    img = img.resize(64, 24) #################################################
     array = np.array(img, dtype=np.float32)
-    y = model(array.reshape(-1, *array.shape).transpose(0, 3, 1, 2))
+    y = model(array.reshape(-1, *array.shape).transpose(0, 3, 1, 2))#n 3 24 64
     print(y)
-    return img.convert("RGB")
+    return img.transpose(0, 2, 3, 1)[0].convert("RGB")
 
 
 class Preview(Window):
