@@ -5,14 +5,10 @@ function onload() {
     canvas = document.getElementById("screen");
     ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight-500;
+    canvas.height = window.innerHeight;
 
     canvas.addEventListener("touchmove", onmove);
     window.addEventListener("resize", onrotation);
-    window.addEventListener("devicemotion", onmotion);
-    var elem = document.getElementById("text");
-    
-    elem.innerHTML = window.DeviceOrientationEvent;
 }
 
 function onmove(evt) {
@@ -39,17 +35,7 @@ function onmove(evt) {
 
 function onrotation() {
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight-500;
+    canvas.height = window.innerHeight;
 
     console.log(window.innerWidth, window.innerHeight);
-}
-
-function onmotion(event) {
-    var elem = document.getElementById("text");
-    
-    elem.innerHTML = window.DeviceOrientationEvent;
-    //elem.innerHTML = String(event.accelerationIncludingGravity.x);
-    //ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //ctx.font = "50px sans-serif";
-    //ctx.fillText(String(event.alpha), 100, 500);
 }
