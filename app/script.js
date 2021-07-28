@@ -1,19 +1,24 @@
+var canvas = HTMLElement;
+var ctx = CanvasRenderingContext2D
+
 function onload() {
-    var canvas = document.getElementById("screen");
-    var ctx = canvas.getContext("2d");
+    canvas = document.getElementById("screen");
+    ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight-500;
 
-    canvas.addEventListener("touchmove", onmove, false);
-
-    //ctx.line(0, 0, 100, 100);
+    canvas.addEventListener("touchmove", onmove);
+    window.addEventListener("resize", onrotation);
+    window.addEventListener("devicemotion", onmotion);
+    var elem = document.getElementById("text");
+    
+    elem.innerHTML = window.DeviceOrientationEvent;
 }
 
 function onmove(evt) {
-    var canvas = document.getElementById("screen");
-    var ctx = canvas.getContext("2d");
-
     evt.preventDefault();
 
-    ctx.clearRect(0, 0, 500, 500);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     var touches = evt.changedTouches;
     console.log(evt);
 
@@ -30,4 +35,21 @@ function onmove(evt) {
     }
 
     ctx.closePath();
+}
+
+function onrotation() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight-500;
+
+    console.log(window.innerWidth, window.innerHeight);
+}
+
+function onmotion(event) {
+    var elem = document.getElementById("text");
+    
+    elem.innerHTML = window.DeviceOrientationEvent;
+    //elem.innerHTML = String(event.accelerationIncludingGravity.x);
+    //ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //ctx.font = "50px sans-serif";
+    //ctx.fillText(String(event.alpha), 100, 500);
 }
