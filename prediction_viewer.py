@@ -2,7 +2,7 @@ import cv2
 from chainer.serializers import load_npz
 import numpy as np
 
-from model2 import LineDetector
+from model import LineDetector
 from dataset import load
 
 
@@ -17,7 +17,7 @@ def togray(imgs):
 
 model = LineDetector()
 load_npz("model.npz", model)
-X, _ = load("Line3.dataset")
+X, _ = load("H:\マイドライブ\Colab Notebooks\old\Line.old.dataset")
 x = togray(X)
 print(x.shape)
 #x = x.transpose(0, 3, 1, 2)

@@ -1,5 +1,5 @@
 body {
-    background-color: black;
+    background-color: rgb(176, 216, 199);
 }
 
 #slider1 {
@@ -14,6 +14,7 @@ body {
 
 #slider2 {
     margin-top: 15%;
+    margin-left: 25%;
     appearance: none;
     height: 30px;
     width: 30%;

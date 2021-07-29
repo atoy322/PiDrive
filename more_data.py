@@ -31,7 +31,7 @@ def blur(img):
 
 
 
-X, y = joblib.load("Line.dataset")
+X, y = joblib.load("Line4.dataset")
 X = np.array(X, dtype=np.float32)
 y = np.array(y)
 Xb = blur(X)
@@ -42,4 +42,4 @@ y = np.concatenate([y, y, y])
 
 print(X.max(), X.min(), Xb.max(), Xb.min(), Xn.max(), Xn.min())
 
-joblib.dump([X, y], "LineX2.dataset")
+joblib.dump([X, y], "LineX3.dataset")
