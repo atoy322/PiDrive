@@ -15,13 +15,11 @@ from chainer import serializers
 
 from raspi_ip import IP
 from model import LineDetector
-#from dataset import load
+
 
 W = 320
 H = 240
 
-#X, y = load("Line.dataset")
-#x = X.transpose(0, 3, 1, 2)
 model = LineDetector()
 serializers.load_npz("model.npz", model)
 
@@ -45,12 +43,19 @@ def image_preprocess(img):
     return img.convert("RGB")
 """
 def image_preprocess(img):
-    img = img.crop((0, img.height//2, img.width, img.height))
-    img = img.resize(64, 24) #################################################
-    array = np.array(img, dtype=np.float32)
-    y = model(array.reshape(-1, *array.shape).transpose(0, 3, 1, 2))#n 3 24 64
+    img_array = np.array(img)
+    img_ = img.crop((0, img.height//2, img.width, img.height)).convert("L")
+    img_ = img_.resize((64, 24)) #################################################
+    array = np.array(img_, dtype=np.float32)
+    #y = model(array.reshape(-1, *array.shape).transpose(0, 3, 1, 2))#n 3 24 64
+    X = array.flatten() / 255
+    X = X.reshape(-1, *X.shape)
+    y = model(X)[0].array * 5
     print(y)
-    return img.transpose(0, 2, 3, 1)[0].convert("RGB")
+    img_array = cv2.circle(img_array, (y[0], 20*5 + 120), 5, (255, 0, 0), -1)
+    img_array = cv2.circle(img_array, (y[1], 12*5 + 120), 5, (255, 0, 0), -1)
+    img_array = cv2.circle(img_array, (y[2], 4*5 + 120), 5, (255, 0, 0), -1)
+    return Image.fromarray(img_array)
 
 
 class Preview(Window):

@@ -1,14 +1,34 @@
-h1 {
-    color: blue;
-}
-
-#screen {
+body {
     background-color: black;
 }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    margin-top: 0%;
-    margin-left: 0%;
+#slider1 {
+    transform: rotate(270deg);
+    margin-top: 15%;
+    appearance: none;
+    width: 30%;
+    height: 30px;
+    border-radius: 10px;
+    background-color: lightsteelblue;
+}
+
+#slider2 {
+    margin-top: 15%;
+    appearance: none;
+    height: 30px;
+    width: 30%;
+    border-radius: 10px;
+    background-color: lightsteelblue;
+}
+
+::-webkit-slider-thumb {
+    appearance: none;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: cornflowerblue;
+}
+
+h1 {
+    color: azure;
 }

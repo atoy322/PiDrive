@@ -7,19 +7,14 @@ class LineDetector(Chain):
         super(LineDetector, self).__init__()
  
         with self.init_scope():
-            self.conv_1 = Convolution2D(3, 10, 3)
-            self.conv_2 = Convolution2D(10, 1, 3)
-            self.l1 = Linear(14, 10)
-            self.l2 = Linear(10, 3)
+            self.l1 = Linear(64*24, 100)
+            self.l2 = Linear(100, 100)
+            self.l3 = Linear(100, 3)
  
     def forward(self, x):
-        h = relu(self.conv_1(x))
-        h = max_pooling_2d(h, 3)
+        h = relu(self.l1(x))
         #h = dropout(h)
-        h = relu(self.conv_2(h))
-        h = max_pooling_2d(h, 3)
+        h = relu(self.l2(h))
         #h = dropout(h)
-        h = relu(self.l1(h))
-        #h = dropout(h)
-        y = self.l2(h)
+        y = self.l3(h)
         return y

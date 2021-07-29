@@ -1,41 +1,22 @@
-var canvas = HTMLElement;
-var ctx = CanvasRenderingContext2D
-
 function onload() {
-    canvas = document.getElementById("screen");
-    ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    var h1 = document.getElementById("val");
+    var slider1 = document.getElementById("slider1");
+    var slider2 = document.getElementById("slider2");
 
-    canvas.addEventListener("touchmove", onmove);
-    window.addEventListener("resize", onrotation);
-}
+    slider1.addEventListener("touchmove", (e)=>{
+        e.preventDefault();
+        h1.innerHTML = e.target.value;
+        
+        var touch = e.changedTouches[0];
+        var rect = e.target.getBoundingClientRect();
+        var X = rect.left + window.pageXOffset;
+        var Y = rect.top + window.pageYOffset;
 
-function onmove(evt) {
-    evt.preventDefault();
+        var x = touch.clientX - X;
+        var y = touch.clientY - Y;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    var touches = evt.changedTouches;
-    console.log(evt);
-
-    ctx.beginPath();
-
-    var pos = evt.target.getBoundingClientRect();
-    var X = pos.left + window.pageXOffset;
-    var Y = pos.top  + window.pageYOffset;
-
-    for(var i=0; i<touches.length; i++) {
-        ctx.arc(touches[i].pageX - X, touches[i].pageY - Y, 10, 0, 2*Math.PI);
-        ctx.fillStyle = "rgb(255, 255, 255)";
-        ctx.fill();
-    }
-
-    ctx.closePath();
-}
-
-function onrotation() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    console.log(window.innerWidth, window.innerHeight);
+        var val = (e.target.clientWidth - y) / e.target.clientWidth * 100;
+        e.target.value = val;
+        slider2.value = val;
+    });
 }

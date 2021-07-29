@@ -2,7 +2,7 @@ import cv2
 from chainer.serializers import load_npz
 import numpy as np
 
-from model import LineDetector
+from model2 import LineDetector
 from dataset import load
 
 
@@ -17,10 +17,10 @@ def togray(imgs):
 
 model = LineDetector()
 load_npz("model.npz", model)
-X, _ = load("Line.old.dataset")
-#x = togray(X)
-print(X.shape)
-x = X.transpose(0, 3, 1, 2)
+X, _ = load("Line3.dataset")
+x = togray(X)
+print(x.shape)
+#x = x.transpose(0, 3, 1, 2)
 y = model(x)
 
 i = 0
@@ -29,12 +29,12 @@ print(X.max(), y.array.max())
 
 while True:
     img = X[i]
-    print(y[i]*64)
+    print(y[i])
     img = cv2.resize(img, (640, 240))
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = cv2.circle(img, (int(y[i][0].array*64)*10, 20*10), 10, (0, 0, 255), -1)
-    img = cv2.circle(img, (int(y[i][1].array*64)*10, 12*10), 10, (0, 0, 255), -1)
-    img = cv2.circle(img, (int(y[i][2].array*64)*10, 4*10), 10, (0, 0, 255), -1)
+    img = cv2.circle(img, (int(y[i][0].array*10), 20*10), 10, (0, 0, 255), -1)
+    img = cv2.circle(img, (int(y[i][1].array*10), 12*10), 10, (0, 0, 255), -1)
+    img = cv2.circle(img, (int(y[i][2].array*10), 4*10), 10, (0, 0, 255), -1)
 
     cv2.imshow("", img)
     key = cv2.waitKey()
