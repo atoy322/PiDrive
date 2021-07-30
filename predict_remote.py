@@ -49,11 +49,12 @@ def image_preprocess(img):
     img_ = img_.resize((64, 24)) #################################################
     array = np.array(img_, dtype=np.float32)
     #y = model(array.reshape(-1, *array.shape).transpose(0, 3, 1, 2))#n 3 24 64
-    X = array.flatten() / 255
-    X = X.reshape(-1, *X.shape)
+    X = array#.flatten()
+    X = X.reshape(-1, 1, *X.shape) / 255
     y = model(X)[0].array * 5
-    m = (40) / (y[1] - y[0])
-    theta = math.atan(m)
+    #m = (40) / (y[1] - y[0])
+    m = (40) / (y[1] - 32*5)
+    theta = math.atan(m) 
     theta = math.degrees(theta)
     if theta >= 0:
         theta = 90 - theta
@@ -100,7 +101,7 @@ class Preview(Window):
         img.blit(0, 0)
         preprocessed.blit(W, 0)
 
-        pred = min(30, max(pred, -30))
+        pred = min(30, max(pred*0.3, -30))
         self.control_sock.send(b"SPEED:40")
         self.control_sock.send(f"STEER:{int(pred)}".encode())
 
@@ -128,6 +129,10 @@ class Preview(Window):
             self.control_sock.send(b"STEER:0")
         elif symbol == key.RIGHT:
             self.control_sock.send(b"STEER:0")
+
+    def on_close(self):
+        self.control_sock.send(b"SPEED:0")
+        super().on_close()
 
 
 if __name__ == "__main__":
