@@ -43,7 +43,8 @@ while True:
 
         res = cv2.resize(res, (320, 240))
         image = Image.fromarray(res)
-        predict(image[1])
+        theta = predict(image)[1]
+        print(theta)
     except Exception as e:
         print(e)
         break
