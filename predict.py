@@ -42,6 +42,8 @@ while True:
             continue
 
         res = cv2.resize(res, (320, 240))
+        res = cv2.cvtColor(res, cv2.COLOR_BGR2RGB)
+        res = cv2.rotate(res, cv2.ROTATE_180)
         image = Image.fromarray(res)
         image.save("image.jpg")
         theta = predict(image)[1]
