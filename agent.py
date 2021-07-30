@@ -46,6 +46,7 @@ while True:
     control_conn, control_addr = control_server.accept()
     stream_conn, stream_addr = stream_server.accept()
     c = Car()
+    c.light("head", 1)
     print(f"Connection established {stream_addr}")
     out = Output(stream_conn)
     cam.start_recording(out, format="mjpeg")
@@ -73,6 +74,7 @@ while True:
                 break
 
         except:
+            c.light("head", 0)
             c.stop()
             c.terminate()
             break
