@@ -35,15 +35,7 @@ def gen_name(dir):
 
     return dir + "/" + f"img-{i}.jpg"
 
-""""
-def image_preprocess(img):
-    img = img.convert("L")
-    array = np.array(img)
-    edge = cv2.Canny(array, 100, 100)
-    img = Image.fromarray(edge)
-    return img.convert("RGB")
-"""
-def image_preprocess(img):
+def predict(img):
     img_array = np.array(img)
     img_ = img.crop((0, img.height//2, img.width, img.height)).convert("L")
     img_ = img_.resize((64, 24))
@@ -64,7 +56,7 @@ def image_preprocess(img):
     return Image.fromarray(img_array), theta
 
 
-class Preview(Window):
+class PredictionViewer(Window):
     def __init__(self, ip, width=720, height=480):
         super().__init__(width=width, height=height)
         self.control_sock = socket.socket()
@@ -87,12 +79,12 @@ class Preview(Window):
                 break
 
         img = Image.open(io.BytesIO(img_buf))
-        img = img.transpose(Image.FLIP_LEFT_RIGHT) # To show
-        self.img = img.transpose(Image.FLIP_TOP_BOTTOM) # To save
-        self.preprocessed, pred = image_preprocess(self.img) # To save
-        preprocessed = self.preprocessed.transpose(Image.FLIP_TOP_BOTTOM) # To show
+        img = img.transpose(Image.FLIP_LEFT_RIGHT)
+        self.img = img.transpose(Image.FLIP_TOP_BOTTOM)
+        preprocessed_image, pred = predict(self.img)
+        preprocessed_image = preprocessed_image.transpose(Image.FLIP_TOP_BOTTOM)
 
-        img = ImageData(W, H, "RGB", preprocessed.tobytes("raw", "RGB"))
+        img = ImageData(W, H, "RGB", preprocessed_image.tobytes("raw", "RGB"))
         img.blit(0, 0)
 
         pred = min(30, max(pred*0.3, -30))
@@ -112,7 +104,6 @@ class Preview(Window):
             self.control_sock.send(b"STEER:20")
         elif symbol == key.ENTER:
             name = gen_name("train_data")
-            #self.img = self.img.crop((0, H//2, W, H)).resize((W//5, H//10))
             self.img.save(name)
             print(name)
 
@@ -133,5 +124,5 @@ class Preview(Window):
 
 if __name__ == "__main__":
     print(IP)
-    p = Preview(IP, width=W, height=H)
+    p = PredictionViewer(IP, width=W, height=H)
     pyglet.app.run()

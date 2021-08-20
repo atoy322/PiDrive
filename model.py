@@ -4,7 +4,7 @@ from chainer.functions import relu, dropout, max_pooling_2d
  
 class LineDetector(Chain):
     def __init__(self):
-        super(LineDetector, self).__init__()
+        super().__init__()
  
         with self.init_scope():
             self.l1 = Convolution2D(1, 3, 3)
@@ -17,8 +17,6 @@ class LineDetector(Chain):
         h = max_pooling_2d(h, 3)
         h = dropout(h)
         h = relu(self.l2(h))
-        #h = dropout(h)
         h = relu(self.l3(h))
-        #h = dropout(h)
         y = self.l4(h)
         return y
