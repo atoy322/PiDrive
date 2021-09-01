@@ -9,6 +9,7 @@
 <li>chainer</li>
 <li>pigpio</li>
 <li>pyglet</li>
+<li>scikit-learn</li>
 
 ### Hardware
 <li>Raspberry Pi zero wh</li>
