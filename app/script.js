@@ -1,7 +1,7 @@
 var slider1 = HTMLElement;
 var slider2 = HTMLElement;
 var h1 = HTMLElement;
-var w = new WebSocket("ws://192.168.11.2");
+var w = new WebSocket("ws://localhost:8080");
 
 function onload() {
     h1 = document.getElementById("val");
@@ -9,6 +9,7 @@ function onload() {
     slider2 = document.getElementById("slider2");
 
     w.addEventListener("open", onsocketopen);
+    w.addEventListener("close", onsocketclose);
     slider1.addEventListener("touchmove", touchmove);
     slider2.addEventListener("touchmove", touchmove);
 }
@@ -41,4 +42,11 @@ function touchmove(e){
 function onsocketopen(event) {
     console.log("[Connected]");
     w.send("ready");
+    h1.innerHTML = "Ready";
+}
+
+function onsocketclose(event) {
+    console.log("[Closed]");
+    alert("Connection closed");
+    h1.innerHTML = "Closed";
 }

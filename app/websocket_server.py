@@ -154,14 +154,25 @@ class WebSocketServer:
 
         return mask(mask_key, buf)
 
+    def close(self):
+        self.sock.close()
+
 
 if __name__ == "__main__":
-    wss = WebSocketServer(80)
+    import sys
+
+    wss = WebSocketServer(8080)
 
     while True:
-        print("accept")
-        wss.accept()
-        while True:
-            data = wss.recv()
-            if not data: break
-            print(data)
+        try:
+            print("accept")
+            wss.accept()
+            while True:
+                data = wss.recv()
+                if not data: break
+                print(data)
+
+        except KeyboardInterrupt:
+            wss.close()
+            sys.exit()
+
