@@ -156,7 +156,7 @@ class WebSocketServer:
 
 
 if __name__ == "__main__":
-    wss = WebSocketServer(80)
+    wss = WebSocketServer(8080)
 
     while True:
         print("accept")

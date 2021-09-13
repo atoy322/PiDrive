@@ -1,7 +1,7 @@
 var slider1 = HTMLElement;
 var slider2 = HTMLElement;
 var h1 = HTMLElement;
-var w = new WebSocket("ws://192.168.11.2");
+var w = new WebSocket("ws://raspberrypi.local:8080");
 
 function onload() {
     h1 = document.getElementById("val");
