@@ -1,17 +1,25 @@
 var slider1 = HTMLElement;
 var slider2 = HTMLElement;
 var h1 = HTMLElement;
-var w = new WebSocket("ws://localhost:8080");
+var head = false;
+var back = false;
+var w = new WebSocket("ws://192.168.246.132:8080");
 
 function onload() {
     h1 = document.getElementById("val");
+    btn1 = document.getElementById("head");
+    btn2 = document.getElementById("back");
     slider1 = document.getElementById("slider1");
     slider2 = document.getElementById("slider2");
 
     w.addEventListener("open", onsocketopen);
     w.addEventListener("close", onsocketclose);
     slider1.addEventListener("touchmove", touchmove);
-    slider2.addEventListener("touchmove", touchmove);
+    slider2.addEventListener("touchmove", touchmove); 
+    slider1.addEventListener("touchend", touchend);
+    slider2.addEventListener("touchend", touchend);
+    btn1.addEventListener("touchstart", onclick);
+    btn2.addEventListener("touchstart", onclick);
 }
 
 function touchmove(e){
@@ -39,14 +47,34 @@ function touchmove(e){
     w.send(e.target.id + ": " + String(Math.min(Math.max(val, 0), 100)));
 }
 
+function touchend(e) {
+    w.send("slider1: 50");
+    w.send("slider2: 50");
+    e.target.value = 50;
+}
+
 function onsocketopen(event) {
     console.log("[Connected]");
     w.send("ready");
-    h1.innerHTML = "Ready";
 }
 
-function onsocketclose(event) {
-    console.log("[Closed]");
-    alert("Connection closed");
-    h1.innerHTML = "Closed";
+function onclick(e) {
+    if(e.target.id == "head") {
+        if(head) {
+            w.send("head: 0");
+            head = false;
+        }else{
+            w.send("head: 1");
+            head = true;
+        }
+    }else if(e.target.id == "back") {
+        if(back) {
+            w.send("back: 0");
+            back = false;
+	}else{
+            w.send("back: 1");
+            back = true;
+        }
+    }
 }
+

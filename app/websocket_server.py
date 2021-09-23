@@ -159,20 +159,13 @@ class WebSocketServer:
 
 
 if __name__ == "__main__":
-    import sys
-
     wss = WebSocketServer(8080)
 
     while True:
-        try:
-            print("accept")
-            wss.accept()
-            while True:
-                data = wss.recv()
-                if not data: break
-                print(data)
-
-        except KeyboardInterrupt:
-            wss.close()
-            sys.exit()
+        print("accept")
+        wss.accept()
+        while True:
+            data = wss.recv()
+            if not data: break
+            print(data)
 

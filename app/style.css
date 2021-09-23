@@ -30,6 +30,16 @@ body {
     background-color: cornflowerblue;
 }
 
-h1 {
-    color: azure;
+#sliders {
+	margin-top: 0%;
+}
+
+#buttons {
+	margin-left: 40%;
+}
+
+.btn {
+	display: block;
+	width: 20%;
+	height: 50px;
 }
