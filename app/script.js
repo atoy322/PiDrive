@@ -58,6 +58,11 @@ function onsocketopen(event) {
     w.send("ready");
 }
 
+function onsocketclose(event) {
+    console.log("[Closed]");
+    alert("Connection closed");
+}
+
 function onclick(e) {
     if(e.target.id == "head") {
         if(head) {
