@@ -17,8 +17,9 @@ from raspi_ip import IP
 class Preview(Window):
     def __init__(self, ip, width=720, height=480):
         super().__init__(width=width, height=height)
-        self.control_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.control_sock = socket.socket()
         self.stream_sock = socket.socket()
+        self.control_sock.connect((ip, 8080))
         self.stream_sock.connect((ip, 8000))
         schedule_interval(self.update, 1e-3)
 
@@ -44,26 +45,26 @@ class Preview(Window):
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.UP:
-            self.control_sock.sendto(b"SPEED:70", (IP, 8080))
+            self.control_sock.send(b"SPEED:70")
         elif symbol == key.DOWN:
-            self.control_sock.sendto(b"SPEED:-70", (IP, 8080))
+            self.control_sock.send(b"SPEED:-70")
         elif symbol == key.LEFT:
-            self.control_sock.sendto(b"STEER:-20", (IP, 8080))
+            self.control_sock.send(b"STEER:-20")
         elif symbol == key.RIGHT:
-            self.control_sock.sendto(b"STEER:20", (IP, 8080))
+            self.control_sock.send(b"STEER:20")
 
     def on_key_release(self, symbol, modifiers):
         if symbol == key.UP:
-            self.control_sock.sendto(b"SPEED:0", (IP, 8080))
+            self.control_sock.send(b"SPEED:0")
         elif symbol == key.DOWN:
-            self.control_sock.sendto(b"SPEED:0", (IP, 8080))
+            self.control_sock.send(b"SPEED:0")
         elif symbol == key.LEFT:
-            self.control_sock.sendto(b"STEER:0", (IP, 8080))
+            self.control_sock.send(b"STEER:0")
         elif symbol == key.RIGHT:
-            self.control_sock.sendto(b"STEER:0", (IP, 8080))
+            self.control_sock.send(b"STEER:0")
 
     def on_close(self):
-        self.control_sock.sendto(b"CLOSE", (IP, 8080))
+        self.control_sock.send(b"CLOSE")
         self.close()
         sys.exit()
 

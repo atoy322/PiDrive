@@ -34,14 +34,16 @@ stream_server = socket.socket()
 stream_server.bind(("", 8000))
 stream_server.listen(1)
 
-control_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+control_sock = socket.socket()
 control_sock.bind(("", 8080))
+control_sock.listen(1)
 
 #cam = picamera.PiCamera(resolution=(640, 480))
 cam = picamera.PiCamera(resolution=(320, 240))
 
 while True:
     print("[Server Ready]")
+    control_conn, control_addr = control_server.accept()
     stream_conn, stream_addr = stream_server.accept()
     c = Car()
     print(f"Connection established {stream_addr}")
@@ -53,7 +55,7 @@ while True:
             if out.closed:
                 break
 
-            commands = control_sock.recvfrom(1024)[0].decode()
+            commands = control_sock.recv(1024).decode()
             
             if commands == "CLOSE":
                 break
