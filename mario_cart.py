@@ -34,9 +34,9 @@ stream_server = socket.socket()
 stream_server.bind(("", 8000))
 stream_server.listen(1)
 
-control_sock = socket.socket()
-control_sock.bind(("", 8080))
-control_sock.listen(1)
+control_server = socket.socket()
+control_server.bind(("", 8080))
+control_server.listen(1)
 
 #cam = picamera.PiCamera(resolution=(640, 480))
 cam = picamera.PiCamera(resolution=(320, 240))
@@ -55,7 +55,7 @@ while True:
             if out.closed:
                 break
 
-            commands = control_sock.recv(1024).decode()
+            commands = control_conn.recv(1024).decode()
             
             if commands == "CLOSE":
                 break
