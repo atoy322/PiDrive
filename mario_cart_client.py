@@ -71,5 +71,5 @@ class Preview(Window):
 
 if __name__ == "__main__":
     print(IP)
-    p = Preview(IP, width=320, height=240)
+    p = Preview(IP, width=640, height=480)
     pyglet.app.run()

@@ -38,8 +38,8 @@ control_server = socket.socket()
 control_server.bind(("", 8080))
 control_server.listen(1)
 
-#cam = picamera.PiCamera(resolution=(640, 480))
-cam = picamera.PiCamera(resolution=(320, 240))
+cam = picamera.PiCamera(resolution=(640, 480))
+#cam = picamera.PiCamera(resolution=(320, 240))
 
 while True:
     print("[Server Ready]")
