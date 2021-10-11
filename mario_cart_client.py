@@ -66,7 +66,7 @@ class Preview(Window):
     def on_close(self):
         self.control_sock.send(b"CLOSE")
         self.close()
-        sys.exit()
+        super().on_close()
 
 
 if __name__ == "__main__":
