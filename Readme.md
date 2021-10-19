@@ -8,7 +8,7 @@ The purpose of this project is making self driving car.
 The PiDrive system is composed of PC and Raspberry Pi.
 First, Raspberry Pi sends image(taken by Raspberry Pi Camera Module) to PC.
 Second, PC desides car behavior that should take.
-Third, PC sends motor control command to Raspberry Pi..
+Third, PC sends motor control command to Raspberry Pi.
 
 
 ## Environment
