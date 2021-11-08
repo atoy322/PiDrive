@@ -1,8 +1,6 @@
 import socket
 import queue
 
-import picamera
-
 
 
 def parse_header(header_string):
@@ -32,8 +30,8 @@ class RadioControlServer:
         self.sock = sock
         self.conn = None
         self.frame_queue = queue.Queue()
-        self.camera = picamera.PiCamera(width=640, height=480)
-        self.camera.start_recording(self, format="mjpeg")
+        # self.camera = picamera.PiCamera(width=640, height=480)
+        # self.camera.start_recording(self, format="mjpeg")
 
     def write(self, data):
         if self.frame:

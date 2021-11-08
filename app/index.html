@@ -7,13 +7,14 @@
     </head>
 
     <body onload="onload();">
+        <img src="http://raspberrypi.local:8888/stream.mjpg" class="image">
         <div id="sliders">
-            <input id="slider1" type="range" min="0" max="100" step="1">
-            <input id="slider2" type="range" min="0" max="100" step="1">
+            <input id="slider1" type="range" min="0" max="100" step="1" class="inputs">
+            <input id="slider2" type="range" min="0" max="100" step="1" class="inputs">
         </div>
-	<div id="buttons">
-		<button class="btn" id="head">Head Light</button>
-		<button class="btn" id="back">Back Light</button>
-	</div>
+        <div id="buttons">
+            <button class="btn inputs" id="head">Head Light</button>
+            <button class="btn inputs" id="back">Back Light</button>
+        </div>
     </body>
 </html>

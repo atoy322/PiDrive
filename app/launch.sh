@@ -1,2 +1,3 @@
-nohup python3 -m http.server 8000 &
+nohup python3 select_server.py &
+nohup python3 recipe.py &
 python3 remote.py
