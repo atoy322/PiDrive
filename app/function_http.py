@@ -54,6 +54,7 @@ class HTTPServer:
         self.server_sock = server_sock
         self.conn = None
         self.cam = PiCamera(resolution="640x480")
+        self.cam.vflip = True
 
     def wait_for_connection(self):
         self.conn, addr = self.server_sock.accept()
