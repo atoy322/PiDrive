@@ -14,7 +14,7 @@ def thread():
                 data = ws.recv()
                 if b": " not in data: continue
                 name, val = data.decode().split(": ")
-                print(val)
+                #print(val)
                 if name == "slider1":
                     c.speed(int(float(val)-50)*2)
                 elif name == "slider2":
