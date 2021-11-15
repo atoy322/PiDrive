@@ -61,6 +61,10 @@ class HTTPServer:
         print(addr)
         self.headers = HTTPHeaders()
         header_string = self.conn.recv(1024*4).decode()  # Header
+
+        if not header_string:
+            return
+        
         self.headers.parse(header_string)
         session_info = self.headers.get()
 
