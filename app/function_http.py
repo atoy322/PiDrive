@@ -2,16 +2,33 @@ import socket
 import os
 import threading
 
-import cv2
-from PIL import Image
+from picamera import PiCamera
 
 
 class OutputStream:
-    def __init__(self):
-        pass
+    def __init__(self, to):
+        self.to = to
+
+    def start_header(self, response_code=200, msg="OK"):
+        self.to.send(f"HTTP/1.0 {str(response_code)} {str(msg)}\r\n".encode())
+
+    def add_header(self, key, val):
+        self.to.send(f"{str(key)}: {str(val)}\r\n".encode())
+
+    def end_header(self):
+        self.to.send(b"\r\n")
 
     def write(self, buf):
-        self.buf = buf
+        self.to.send(b"--FRAME\r\n")
+        self.add_header('Age', 0)
+        self.add_header('Cache-Control', 'no-cache, private')
+        self.add_header('Pragma', 'no-cache')
+        self.add_header("Content-Type", "image/jpeg")
+        self.add_header("Content-Length", len(buf))
+        self.end_header()
+
+        self.to.sendall(buf)
+        self.to.send(b"\r\n")
 
 class HTTPHeaders:
     def __init__(self):
@@ -36,7 +53,7 @@ class HTTPServer:
     def __init__(self, server_sock):
         self.server_sock = server_sock
         self.conn = None
-        self.cap = cv2.VideoCapture(0) ###############################################
+        self.cam = PiCamera(resolution="640x480")
 
     def wait_for_connection(self):
         self.conn, addr = self.server_sock.accept()
@@ -90,24 +107,9 @@ class HTTPServer:
             self.add_header("Content-Type", "multipart/x-mixed-replace; boundary=FRAME")
             self.end_header()
 
-            while True:
-                ret, img = self.cap.read()
-                if not ret:
-                    continue
+            output = OutputStream(self.conn)
+            self.cam.start_recording(output=output, format="mjpeg")
 
-                image = Image.fromarray(img[:, :, ::-1]).tobytes("jpeg", "RGB")
-                #image = open("test.jpg", "rb").read()
-
-                self.conn.send(b"--FRAME\r\n")
-                self.add_header('Age', 0)
-                self.add_header('Cache-Control', 'no-cache, private')
-                self.add_header('Pragma', 'no-cache')
-                self.add_header("Content-Type", "image/jpeg")
-                self.add_header("Content-Length", len(image))
-                self.end_header()
-
-                self.conn.sendall(image)
-                self.conn.send(b"\r\n")
 
     def client_loop(self):
         while True:
