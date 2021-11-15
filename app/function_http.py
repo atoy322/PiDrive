@@ -96,7 +96,7 @@ class HTTPServer:
                     continue
 
                 image = Image.fromarray(img[:, :, ::-1]).tobytes("jpeg", "RGB")
-                image = open("test.jpg", "rb").read()
+                #image = open("test.jpg", "rb").read()
 
                 self.conn.send(b"--FRAME\r\n")
                 self.add_header('Age', 0)
