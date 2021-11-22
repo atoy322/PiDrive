@@ -114,7 +114,10 @@ class HTTPServer:
             self.end_header()
 
             output = OutputStream(self.conn)
-            self.cam.start_recording(output=output, format="mjpeg")
+            try:
+                self.cam.start_recording(output=output, format="mjpeg")
+            except:
+                self.cam.stop_recording()
 
 
     def client_loop(self):
