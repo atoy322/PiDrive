@@ -6,8 +6,9 @@ from picamera import PiCamera
 
 
 class OutputStream:
-    def __init__(self, to):
+    def __init__(self, to, cam):
         self.to = to
+        self.cam = cam
 
     def start_header(self, response_code=200, msg="OK"):
         self.to.send(f"HTTP/1.0 {str(response_code)} {str(msg)}\r\n".encode())
@@ -33,6 +34,7 @@ class OutputStream:
 
         except:
             print("error")
+            self.cam.stop_recording()
             return
 
 class HTTPHeaders:
@@ -118,7 +120,7 @@ class HTTPServer:
             self.add_header("Content-Type", "multipart/x-mixed-replace; boundary=FRAME")
             self.end_header()
 
-            output = OutputStream(self.conn)
+            output = OutputStream(self.conn, self.cam)
             try:
                 self.cam.start_recording(output=output, format="mjpeg")
             except:
