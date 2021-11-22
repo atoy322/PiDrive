@@ -19,16 +19,21 @@ class OutputStream:
         self.to.send(b"\r\n")
 
     def write(self, buf):
-        self.to.send(b"--FRAME\r\n")
-        self.add_header('Age', 0)
-        self.add_header('Cache-Control', 'no-cache, private')
-        self.add_header('Pragma', 'no-cache')
-        self.add_header("Content-Type", "image/jpeg")
-        self.add_header("Content-Length", len(buf))
-        self.end_header()
+        try:
+            self.to.send(b"--FRAME\r\n")
+            self.add_header('Age', 0)
+            self.add_header('Cache-Control', 'no-cache, private')
+            self.add_header('Pragma', 'no-cache')
+            self.add_header("Content-Type", "image/jpeg")
+            self.add_header("Content-Length", len(buf))
+            self.end_header()
 
-        self.to.sendall(buf)
-        self.to.send(b"\r\n")
+            self.to.sendall(buf)
+            self.to.send(b"\r\n")
+
+        except:
+            print("error")
+            return
 
 class HTTPHeaders:
     def __init__(self):
