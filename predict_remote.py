@@ -50,9 +50,9 @@ def predict(img):
     else:
         theta = -(90 + theta)
     color = (167, 254, 113)
-    img_array = cv2.circle(img_array, (y[0], 20*5 + 120), 5, color, -1)
-    img_array = cv2.circle(img_array, (y[1], 12*5 + 120), 5, color, -1)
-    img_array = cv2.circle(img_array, (y[2], 4*5 + 120), 5, color, -1)
+    img_array = cv2.circle(img_array, (int(y[0]), 20*5 + 120), 5, color, -1)
+    img_array = cv2.circle(img_array, (int(y[1]), 12*5 + 120), 5, color, -1)
+    img_array = cv2.circle(img_array, (int(y[2]), 4*5 + 120), 5, color, -1)
     return Image.fromarray(img_array), theta
 
 
