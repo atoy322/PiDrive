@@ -121,6 +121,7 @@ class HTTPServer:
             self.conn.sendall(filedata)
             self.conn.close()
         else:  # path = "stream.mjpg"
+            print("stream.mjpg")
             self.start_header()
             self.add_header("Content-Type", "multipart/x-mixed-replace; boundary=FRAME")
             self.end_header()
