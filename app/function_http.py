@@ -114,6 +114,11 @@ class HTTPServer:
             self.conn.sendall(filedata)
             self.conn.close()
         else:  # path = "stream.mjpg"
+            try:
+                # if the camera already recording.
+                self.cam.stop_recording()
+            except:
+                pass
             print("stream.mjpg")
             self.start_header()
             self.add_header("Content-Type", "multipart/x-mixed-replace; boundary=FRAME")
