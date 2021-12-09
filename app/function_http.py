@@ -9,7 +9,6 @@ class OutputStream:
     def __init__(self, to, cam):
         self.to = to
         self.cam = cam
-        self.state = False
 
     def start_header(self, response_code=200, msg="OK"):
         self.to.send(f"HTTP/1.0 {str(response_code)} {str(msg)}\r\n".encode())
@@ -24,20 +23,16 @@ class OutputStream:
         self.to = conn
 
     def write(self, buf):
-        if self.state:
-            try:
-                self.to.send(b"--FRAME\r\n")
-                self.add_header('Age', 0)
-                self.add_header('Cache-Control', 'no-cache, private')
-                self.add_header('Pragma', 'no-cache')
-                self.add_header("Content-Type", "image/jpeg")
-                self.add_header("Content-Length", len(buf))
-                self.end_header()
+        self.to.send(b"--FRAME\r\n")
+        self.add_header('Age', 0)
+        self.add_header('Cache-Control', 'no-cache, private')
+        self.add_header('Pragma', 'no-cache')
+        self.add_header("Content-Type", "image/jpeg")
+        self.add_header("Content-Length", len(buf))
+        self.end_header()
 
-                self.to.sendall(buf)
-                self.to.send(b"\r\n")
-            except:
-                self.state = False
+        self.to.sendall(buf)
+        self.to.send(b"\r\n")
 
 
 class HTTPHeaders:
@@ -66,8 +61,6 @@ class HTTPServer:
         self.cam = PiCamera(resolution="640x480")
         self.cam.vflip = True
         self.cam.hflip = True
-        self.output = OutputStream(self.conn, self.cam)
-        self.cam.start_recording(output=self.output, format="mjpeg")
 
     def wait_for_connection(self):
         self.conn, addr = self.server_sock.accept()
@@ -125,8 +118,9 @@ class HTTPServer:
             self.start_header()
             self.add_header("Content-Type", "multipart/x-mixed-replace; boundary=FRAME")
             self.end_header()
-
-            self.output.state = True
+            
+            self.output = OutputStream(self.conn, self.cam)
+            self.cam.start_recording(output=self.output, format="mjpeg")
 
     def client_loop(self):
         while True:
