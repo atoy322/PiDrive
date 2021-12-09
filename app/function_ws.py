@@ -1,4 +1,4 @@
-from websocket_server import WebSocketServer
+from thin_ws_server import WebSocketServer
 from car_ctrl import Car
 
 
