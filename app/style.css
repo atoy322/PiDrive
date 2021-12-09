@@ -56,6 +56,5 @@ body {
 .image {
     position: relative;
     margin-left: 20%;
-    width: auto;
-    height:80vh;
+    width: 50%;
 }

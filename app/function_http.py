@@ -58,7 +58,7 @@ class HTTPServer:
     def __init__(self, server_sock):
         self.server_sock = server_sock
         self.conn = None
-        self.cam = PiCamera(resolution="640x480")
+        self.cam = PiCamera(resolution="160x120", framerate=30)
         self.cam.vflip = True
         self.cam.hflip = True
 
