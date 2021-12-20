@@ -9,3 +9,4 @@ build
 *.apk
 test
 old
+*.npz
