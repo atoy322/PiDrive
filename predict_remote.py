@@ -63,9 +63,11 @@ class PredictionViewer(Window):
         self.stream_sock = socket.socket()
         self.stream_sock.connect((ip, 8000))
         self.control_sock.connect((ip, 8080))
+        self.elapsed = 0
         schedule_interval(self.update, 1e-3)
 
     def update(self, dt):
+        self.elapsed += dt
         received = 0
         img_buf = b""
         size_data = self.stream_sock.recv(4)
@@ -88,8 +90,10 @@ class PredictionViewer(Window):
         img.blit(0, 0)
 
         pred = min(30, max(pred*0.3, -30))
-        self.control_sock.send(b"SPEED:40")
-        self.control_sock.send(f"STEER:{int(pred)}".encode())
+
+        if not int(self.elapsed*10) % 2:
+            self.control_sock.send(b"SPEED:40")
+            self.control_sock.send(f"STEER:{int(pred)}".encode())
 
         self.set_caption("FPS: {:3.5f} [frame/s]".format(1/dt))
 
