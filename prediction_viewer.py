@@ -2,7 +2,7 @@ import cv2
 from chainer.serializers import load_npz
 import numpy as np
 
-from model import LineDetector
+from model.model import LineDetector
 from dataset import load
 
 

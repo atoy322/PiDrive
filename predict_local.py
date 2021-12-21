@@ -5,7 +5,7 @@ from PIL import Image
 import numpy as np
 from chainer.serializers import load_npz
 
-from model import LineDetector
+from model.model import LineDetector
 
 
 

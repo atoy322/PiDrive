@@ -15,7 +15,7 @@ import numpy as np
 from chainer import serializers
 
 from raspi_ip import IP
-from model import LineDetector
+from model.model import LineDetector
 
 
 W = 320
