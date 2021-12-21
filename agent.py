@@ -54,7 +54,7 @@ while True:
         try:
             commands = control_conn.recv(1024).decode()
             commands = commands.split(",")
-            print(commands)
+            # print(commands)
 
             for command in commands:
                 if command.count(":") != 1:
