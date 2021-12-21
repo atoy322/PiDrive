@@ -8,3 +8,8 @@ build
 *.exe
 *.apk
 test
+old
+*.npz
+dist
+*.egg-info
+vc4c_install.sh

@@ -15,14 +15,14 @@ import numpy as np
 from chainer import serializers
 
 from raspi_ip import IP
-from model import LineDetector
+from model.model import LineDetector
 
 
 W = 320
 H = 240
 
 model = LineDetector()
-serializers.load_npz("model.npz", model)
+serializers.load_npz("model/model.npz", model)
 
 def gen_name(dir):
     i = 0
@@ -50,9 +50,9 @@ def predict(img):
     else:
         theta = -(90 + theta)
     color = (167, 254, 113)
-    img_array = cv2.circle(img_array, (y[0], 20*5 + 120), 5, color, -1)
-    img_array = cv2.circle(img_array, (y[1], 12*5 + 120), 5, color, -1)
-    img_array = cv2.circle(img_array, (y[2], 4*5 + 120), 5, color, -1)
+    img_array = cv2.circle(img_array, (int(y[0]), 20*5 + 120), 5, color, -1)
+    img_array = cv2.circle(img_array, (int(y[1]), 12*5 + 120), 5, color, -1)
+    img_array = cv2.circle(img_array, (int(y[2]), 4*5 + 120), 5, color, -1)
     return Image.fromarray(img_array), theta
 
 
@@ -63,9 +63,11 @@ class PredictionViewer(Window):
         self.stream_sock = socket.socket()
         self.stream_sock.connect((ip, 8000))
         self.control_sock.connect((ip, 8080))
+        self.elapsed = 0
         schedule_interval(self.update, 1e-3)
 
     def update(self, dt):
+        self.elapsed += dt
         received = 0
         img_buf = b""
         size_data = self.stream_sock.recv(4)
@@ -88,8 +90,10 @@ class PredictionViewer(Window):
         img.blit(0, 0)
 
         pred = min(30, max(pred*0.3, -30))
-        self.control_sock.send(b"SPEED:40")
-        self.control_sock.send(f"STEER:{int(pred)}".encode())
+
+        if not int(self.elapsed*10) % 2:
+            self.control_sock.send(b"SPEED:40")
+            self.control_sock.send(f"STEER:{int(pred)}".encode())
 
         self.set_caption("FPS: {:3.5f} [frame/s]".format(1/dt))
 

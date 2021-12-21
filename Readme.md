@@ -7,7 +7,7 @@ This project was launched for my themed research in my school.
 The purpose of this project is making self driving car.
 The PiDrive system is composed of PC and Raspberry Pi.
 First, Raspberry Pi sends image(taken by Raspberry Pi Camera Module) to PC.
-Second, PC desides car behavior that should take.
+Second, PC decides car behavior that should take.
 Third, PC sends motor control command to Raspberry Pi.
 
 
@@ -26,3 +26,7 @@ Third, PC sends motor control command to Raspberry Pi.
 - DC Motor
 - Servo Motor
 - LED (orange, red)
+
+## About Neural Network
+![network structure](images/network_structure.png)
+

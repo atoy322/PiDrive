@@ -5,12 +5,12 @@ from PIL import Image
 import numpy as np
 from chainer.serializers import load_npz
 
-from model import LineDetector
+from model.model import LineDetector
 
 
 
 model = LineDetector()
-load_npz("model.npz", model)
+load_npz("model/model.npz", model)
 
 
 def predict(img):

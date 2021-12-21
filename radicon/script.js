@@ -3,7 +3,9 @@ var slider2 = HTMLElement;
 var h1 = HTMLElement;
 var head = false;
 var back = false;
-var w = new WebSocket("ws://raspberrypi.local:8080");
+var w = new WebSocket(`ws://${location.hostname}:8080`);
+var current_cmd_name = "";
+var current_cmd_val = 0;
 
 function onload() {
     h1 = document.getElementById("val");
@@ -20,6 +22,8 @@ function onload() {
     slider2.addEventListener("touchend", touchend);
     btn1.addEventListener("touchstart", onclick);
     btn2.addEventListener("touchstart", onclick);
+
+    //setInterval(send, 50);
 }
 
 function touchmove(e){
@@ -44,13 +48,25 @@ function touchmove(e){
         var val = x / e.target.clientWidth * 100;
     }
     e.target.value = val;
-    w.send(e.target.id + ": " + String(Math.min(Math.max(val, 0), 100)));
+    current_cmd_name = e.target.id;
+    current_cmd_val = val;
+
+    
+    w.send(current_cmd_name + ": " + String(Math.min(Math.max(current_cmd_val, 0), 100)));
+}
+
+function send() {
+    if(current_cmd_name != "") {
+        //w.send(current_cmd_name + ": " + String(Math.min(Math.max(current_cmd_val, 0), 100)));
+        current_cmd_name = "";
+    }
 }
 
 function touchend(e) {
     w.send("slider1: 50");
     w.send("slider2: 50");
     e.target.value = 50;
+    current_cmd_name = "";
 }
 
 function onsocketopen(event) {
