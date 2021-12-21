@@ -10,7 +10,7 @@ from model.model import LineDetector
 
 
 model = LineDetector()
-load_npz("model.npz", model)
+load_npz("model/model.npz", model)
 
 
 def predict(img):
