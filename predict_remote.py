@@ -22,7 +22,7 @@ W = 320
 H = 240
 
 model = LineDetector()
-serializers.load_npz("model.npz", model)
+serializers.load_npz("model/model.npz", model)
 
 def gen_name(dir):
     i = 0

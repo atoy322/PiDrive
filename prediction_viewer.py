@@ -16,8 +16,8 @@ def togray(imgs):
     return buf.copy()
 
 model = LineDetector()
-load_npz("model.npz", model)
-X, _ = load("H:\マイドライブ\Colab Notebooks\old\Line.old.dataset")
+load_npz("model/model.npz", model)
+X, _ = load("train_data/Line.old.dataset")
 x = togray(X)
 print(x.shape)
 #x = x.transpose(0, 3, 1, 2)
